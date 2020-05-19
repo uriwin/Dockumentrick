@@ -3,7 +3,6 @@ package fileETL;
 import manipulateActions.ManipulateAction;
 import fileFormat.FileFormatFactory;
 import fileFormat.FileFormatType;
-import inputStream.BufferInputStream;
 import inputStream.DataManipulatorInputStream;
 
 import java.io.*;
@@ -39,7 +38,6 @@ public class FileETL {
         InputStream inputStream = new FileInputStream(inputFilePath);
         FileFormatFactory fileFormatFactory = new FileFormatFactory();
         for (ManipulateAction dataManipulatorAction : dataManipulatorActions) {
-            inputStream = new BufferInputStream(inputStream);
             inputStream = new DataManipulatorInputStream(inputStream,
                     fileFormatFactory.getFileFormat(fileFormat), dataManipulatorAction);
         }

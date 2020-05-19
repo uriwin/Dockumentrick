@@ -14,7 +14,7 @@ public class DataManipulatorInputStream extends FilterInputStream {
     private byte[] dataToReturnBuffer;
     private int dataToReturnPos;
     private int dataToReturnCount;
-
+    private int lastByteRead;
 
     public DataManipulatorInputStream(InputStream inputStream, AbstractFileFormat fileFormat,
                                       ManipulateAction dataManipulatorAction) throws IOException {
@@ -23,6 +23,7 @@ public class DataManipulatorInputStream extends FilterInputStream {
         this.fileFormat = fileFormat;
         this.dataManipulatorAction = dataManipulatorAction;
         this.dataToReturnCount = this.dataToReturnPos = 0;
+        this.lastByteRead = -2;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class DataManipulatorInputStream extends FilterInputStream {
     }
 
     public boolean refillDataToReturnBuffer() throws IOException {
-        int fileByte = in.read();
+        int fileByte = getFileByteToManipulate();
         if (fileByte == -1) {
             return false;
         }
@@ -45,7 +46,17 @@ public class DataManipulatorInputStream extends FilterInputStream {
         dataToReturnPos = 0;
         dataToReturnCount = dataToReturn.length();
         return true;
+    }
 
+    public int getFileByteToManipulate() throws IOException {
+        int fileByteToManipulate;
+        if (lastByteRead == -2)
+            fileByteToManipulate = in.read();
+        else{
+            fileByteToManipulate = lastByteRead;
+            lastByteRead = -2;
+        }
+        return fileByteToManipulate;
     }
 
     public boolean isFileByteToManipulate(int fileByte) {
@@ -55,6 +66,7 @@ public class DataManipulatorInputStream extends FilterInputStream {
             return false;
         return dataManipulatorAction.isByteRequiredForAction(fileByte);
     }
+
 
     public String getDataToReturn(int fileByte) throws IOException {
         StringBuilder dataToManipulate = new StringBuilder();
@@ -70,11 +82,10 @@ public class DataManipulatorInputStream extends FilterInputStream {
         while (isFileByteToManipulate) {
             dataToManipulate.append((char) fileByte);
             dataManipulatorAction.updateFilters(fileByte);
-            in.mark(in.available());
             fileByte = in.read();
             isFileByteToManipulate = isFileByteToManipulate(fileByte);
         }
-        in.reset();
+        lastByteRead = fileByte;
         dataToReturn = dataManipulatorAction.manipulateData(dataToManipulate.toString());
 
         return dataToReturn;

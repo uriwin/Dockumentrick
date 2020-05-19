@@ -1,25 +1,25 @@
 package manipulateActions;
 
 public class EscapeCharacterAppender extends AbstractManipulateAction {
-    private String specialChar;
+    private char specialChar;
     private String escapeCharacter;
     private ManipulateActionsType manipulateActionType;
 
-    public EscapeCharacterAppender(String specialChar, ManipulateActionsType manipulateActionType) {
+    public EscapeCharacterAppender(char specialChar, ManipulateActionsType manipulateActionType) {
         super(manipulateActionType);
 
         this.specialChar = specialChar;
         this.escapeCharacter = "/";
-        this.manipulateActionType = ManipulateActionsType.EscapeCharacterAppender;
+        this.manipulateActionType = manipulateActionType;
     }
 
 
     @Override
     public String manipulateData(String data) {
-        return data.replace(this.specialChar, this.escapeCharacter + this.specialChar);
+        return data.replace(String.valueOf(this.specialChar), this.escapeCharacter + this.specialChar);
     }
     public boolean isByteRequiredForAction(int data) {
-        return (char) data == specialChar.indexOf(0);
+        return (char) data == specialChar;
     }
 
 }

@@ -43,7 +43,7 @@ public class ManipulatorActionParser {
                 int baseToChange = baseTypeConverter.convertStringToInt(option.getValue());
                 return new ManipulateAction(new BaseConverter(baseToChange, 10, manipulateActionType));
             case EscapeCharacterAppender:
-                return new ManipulateAction(new EscapeCharacterAppender(option.getValue(), manipulateActionType));
+                return new ManipulateAction(new EscapeCharacterAppender(option.getValue().charAt(0), manipulateActionType));
             case StringEncloser:
                 String encloseByValue = getEncloseByValue(iterator.next());
                 return new ManipulateAction(new StringEncloser(option.getValue(), encloseByValue, manipulateActionType));
