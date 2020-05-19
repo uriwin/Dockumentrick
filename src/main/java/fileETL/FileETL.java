@@ -23,7 +23,7 @@ public class FileETL {
     }
 
     public void executeETL() throws IOException {
-        InputStream inputStream = getDecoratedInputStream();
+        InputStream inputStream = getDataManipulatorInputStream();
         OutputStream outputStream = new FileOutputStream(outputFilePath);
         int data = inputStream.read();
         while(data != -1) {
@@ -34,7 +34,7 @@ public class FileETL {
         outputStream.close();
     }
 
-    public InputStream getDecoratedInputStream() throws IOException {
+    public InputStream getDataManipulatorInputStream() throws IOException {
         InputStream inputStream = new FileInputStream(inputFilePath);
         FileFormatFactory fileFormatFactory = new FileFormatFactory();
         for (ManipulateAction dataManipulatorAction : dataManipulatorActions) {
