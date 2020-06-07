@@ -6,11 +6,9 @@ import fileETL.FileETL;
 import fileFormat.FileFormatType;
 import manipulateActions.ManipulateAction;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.IOUtils;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.List;
 
 public class Main {
@@ -23,12 +21,13 @@ public class Main {
         String outputPath = dockumentrickCliParser.getOutputFilePath();
         FileFormatType fileFormatType = dockumentrickCliParser.getFileFormat(inputPath);
         List<ManipulateAction> manipulateActions = dockumentrickCliParser.getManipulateActions();
+        InputStream fileInputStream = new FileInputStream(inputPath);
 
         DataManipulatorInputStreamDecorator dataManipulatorInputStreamDecorator =
-                new DataManipulatorInputStreamDecorator(inputPath, fileFormatType, manipulateActions);
+                new DataManipulatorInputStreamDecorator(fileFormatType, manipulateActions, fileInputStream);
         OutputStream outputStream = new FileOutputStream(outputPath);
         InputStream inputStream = dataManipulatorInputStreamDecorator.getDataManipulatorInputStream();
-
+//        IOUtils.copy(inputStream, outputStream);
         FileETL fileETL = new FileETL(inputStream, outputStream);
         fileETL.executeETL();
     }

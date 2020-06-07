@@ -1,47 +1,64 @@
 package fileFilter.filters;
 
-import fileFilter.AbstractFilter;
-import fileFilter.FilterType;
+import fileFilter.FilterState;
+import fileFilter.IFilter;
 
-public class XmlElementFilter extends AbstractFilter {
+public class XmlElementFilter implements IFilter {
     public String tagData;
-    private String tagNameToFilter;
+
     private boolean isInMiddleOfTag;
 
+    private String startingTagToFilter;
+
+    private String closingTagToFilter;
+
+    private Boolean isBetweenTagToFilter;
+
     public XmlElementFilter(String tagName) {
-        this.filterType = FilterType.ELEMENT;
-        this.tagNameToFilter = tagName;
+
+        this.startingTagToFilter = "<" + tagName + ">";
+
+        this.closingTagToFilter = "</" + tagName + ">";
+
         this.tagData = "";
-        this.isFilterActivated = false;
+
         this.isInMiddleOfTag = false;
+
+        this.isBetweenTagToFilter = false;
     }
 
-    public String getStartingTag() {
-        return "<" + tagNameToFilter + ">";
-    }
-
-    public String getClosingTag() {
-        return "</" + tagNameToFilter + ">";
-    }
-
-    @Override
-    public void updateFilter(int fileByte) {
+    public FilterState isDataCanBeManipulated(char data){
         if (isInMiddleOfTag){
-            tagData += (char) fileByte;
-            if (tagData.equals(getClosingTag()))
-                isFilterActivated = false;
-            if (tagData.equals(getStartingTag()))
-                isFilterActivated = true;
-            if ((char) fileByte == '>'){
-                tagData = "";
-                isInMiddleOfTag = false;
-            }
+            return handleMiddleOfTag(data);
         }
         else {
-            if ((char) fileByte == '<'){
-                tagData += (char) fileByte;
+            if (isTagStarted(data)){
+                tagData += data;
                 isInMiddleOfTag = true;
+                return FilterState.MORE_DATA_NEEDED;
             }
+            return FilterState.NO;
         }
+    }
+    public boolean isTagCompleted(char data){
+        return data == '>';
+    }
+
+    public boolean isTagStarted(char data){
+        return (data == '<');
+    }
+
+    public FilterState handleMiddleOfTag(char data){
+        tagData += data;
+        if (isTagCompleted(data)){
+            isInMiddleOfTag = false;
+            if (tagData.equals(closingTagToFilter)){
+                tagData = "";
+                return FilterState.YES;
+            }
+            tagData = "";
+            return FilterState.NO;
+        }
+        return FilterState.MORE_DATA_NEEDED;
     }
 }

@@ -1,28 +1,35 @@
 package fileFilter.filters;
 
-import fileFilter.AbstractFilter;
-import fileFilter.FilterType;
+import fileFilter.FilterState;
+import fileFilter.IFilter;
 
-public class CsvColumnFilter extends AbstractFilter {
+public class CsvColumnFilter implements IFilter {
     private int columnPositionToFilter;
     private int currentColumnPosition;
 
 
     public CsvColumnFilter(int columnPositionToFilter) {
-        this.filterType = FilterType.COLUMN;
-        this.isFilterActivated = false;
-        this.currentColumnPosition = 1;
+        this.currentColumnPosition = 0;
         this.columnPositionToFilter = columnPositionToFilter;
     }
 
-    @Override
-    public void updateFilter(int fileByte) {
-        if (fileByte == ',')
+//    @Override
+//    public void updateFilter(int fileByte) {
+//        if ((char) fileByte == ',')
+//            currentColumnPosition += 1;
+//        if ((char) fileByte =='\n')
+//            currentColumnPosition = 0;
+//    }
+
+    public FilterState isDataCanBeManipulated(char data)
+    {
+        if (data == ',')
             currentColumnPosition += 1;
-        if (fileByte =='\n')
-            currentColumnPosition = 1;
-
-        isFilterActivated = currentColumnPosition == columnPositionToFilter;
+        if (data =='\n')
+            currentColumnPosition = 0;
+        if (currentColumnPosition == columnPositionToFilter){
+            return FilterState.YES;
+        }
+        return FilterState.NO;
     }
-
 }

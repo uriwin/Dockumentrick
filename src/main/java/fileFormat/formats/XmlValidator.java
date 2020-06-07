@@ -1,28 +1,33 @@
 package fileFormat.formats;
 
-import fileFormat.AbstractFileFormat;
+import fileFormat.BaseFileValidator;
 import fileFormat.FileFormatType;
 
-public class Xml extends AbstractFileFormat {
-    public char startOfTag;
-    public char endOfTag;
+public class XmlValidator extends BaseFileValidator {
     public boolean isInMiddleOfTag;
 
-    public Xml(FileFormatType fileFormatType) {
-        this.startOfTag = '<';
-        this.endOfTag = '>';
+    final static char START_OF_TAG = '<';
+
+    final static char END_OF_TAG = '>';
+
+    public XmlValidator(FileFormatType fileFormatType) {
+        super(fileFormatType);
+
         this.isInMiddleOfTag = false;
+
         this.fileFormatType = fileFormatType;
     }
 
     @Override
     public boolean isByteRelatedToFileFormat(int data) {
         if (isInMiddleOfTag) {
-            if ((char) data == endOfTag)
+            if ((char) data == END_OF_TAG){
                 isInMiddleOfTag = false;
+            }
             return true;
-        } else {
-            if ((char) data == startOfTag) {
+        }
+        else {
+            if ((char) data == START_OF_TAG) {
                 isInMiddleOfTag = true;
                 return true;
             }

@@ -41,12 +41,12 @@ public class ManipulatorActionParser {
             case BaseConverter:
                 BaseTypeConverter baseTypeConverter = new BaseTypeConverter();
                 int baseToChange = baseTypeConverter.convertStringToInt(option.getValue());
-                return new ManipulateAction(new BaseConverter(baseToChange, 10, manipulateActionType));
+                return new ManipulateAction(new BaseConverter(baseToChange, 10));
             case EscapeCharacterAppender:
-                return new ManipulateAction(new EscapeCharacterAppender(option.getValue().charAt(0), manipulateActionType));
+                return new ManipulateAction(new EscapeCharacterAppender(option.getValue().charAt(0)));
             case StringEncloser:
                 String encloseByValue = getEncloseByValue(iterator.next());
-                return new ManipulateAction(new StringEncloser(option.getValue(), encloseByValue, manipulateActionType));
+                return new ManipulateAction(new StringEncloser(option.getValue(), encloseByValue));
             default:
                 throw new IllegalArgumentException("No data manipulation action found");
         }
@@ -57,7 +57,7 @@ public class ManipulatorActionParser {
         return option.getValue();
     }
 
-    public AbstractFilter getFilter(String argument, String argumentValue) {
+    public IFilter getFilter(String argument, String argumentValue) {
         StringToEnumTypeConverter stringToEnumConverter = new StringToEnumTypeConverter();
         FilterFactory filterFactory = new FilterFactory();
 

@@ -1,20 +1,19 @@
 package fileFormat;
 
-import fileFormat.formats.Csv;
-import fileFormat.formats.Txt;
-import fileFormat.formats.Xml;
+import fileFormat.formats.CsvValidator;
+import fileFormat.formats.XmlValidator;
 
 public class FileFormatFactory {
-    public AbstractFileFormat getFileFormat(FileFormatType fileFormatType) {
+    public BaseFileValidator getFileFormat(FileFormatType fileFormatType) {
         switch (fileFormatType) {
             case TXT:
-                return new Txt(fileFormatType);
+                return new BaseFileValidator(fileFormatType);
             case CSV:
-                return new Csv(fileFormatType);
+                return new CsvValidator(fileFormatType);
             case XML:
-                return new Xml(fileFormatType);
+                return new XmlValidator(fileFormatType);
             default:
-                throw new IllegalArgumentException("Invalid file format type");
+                throw new IllegalArgumentException("unsupported file type");
         }
     }
 }

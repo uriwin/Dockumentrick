@@ -1,27 +1,27 @@
 package inputStream;
 
-import manipulateActions.ManipulateAction;
 import fileFormat.FileFormatFactory;
 import fileFormat.FileFormatType;
-import inputStream.DataManipulatorInputStream;
+import manipulateActions.ManipulateAction;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class DataManipulatorInputStreamDecorator {
     private String inputFilePath;
     private FileFormatType fileFormat;
     private List<ManipulateAction> dataManipulatorActions;
+    private InputStream inputStream;
 
-    public DataManipulatorInputStreamDecorator(String inputFilePath, FileFormatType fileFormat,
-                                               List<ManipulateAction> dataManipulatorActions) {
-        this.inputFilePath = inputFilePath;
+    public DataManipulatorInputStreamDecorator(FileFormatType fileFormat, List<ManipulateAction> dataManipulatorActions,
+                                               InputStream inputStream) {
         this.fileFormat = fileFormat;
         this.dataManipulatorActions = dataManipulatorActions;
+        this.inputStream = inputStream;
     }
 
     public InputStream getDataManipulatorInputStream() throws IOException {
-        InputStream inputStream = new FileInputStream(inputFilePath);
         FileFormatFactory fileFormatFactory = new FileFormatFactory();
         for (ManipulateAction dataManipulatorAction : dataManipulatorActions) {
             inputStream = new DataManipulatorInputStream(inputStream,

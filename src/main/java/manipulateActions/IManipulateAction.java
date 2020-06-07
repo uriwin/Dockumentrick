@@ -1,9 +1,9 @@
 package manipulateActions;
 
-public interface IManipulateAction {
-    public String manipulateData(String fileChunkData);
+import java.util.List;
 
-    public ManipulateActionsType getManipulateActionType();
+public interface IManipulateAction {
+    public String manipulateDataAction(String data);
 
     public boolean isByteRequiredForAction(int data);
 }

@@ -13,20 +13,20 @@ public class StringToEnumTypeConverter {
             case "enclose":
                 return ManipulateActionsType.StringEncloser;
             default:
-                throw new IllegalArgumentException("No data manipulation action exists");
+                throw new IllegalArgumentException("action: " + actionType + " does not exists");
         }
     }
 
     public FilterType convertFilterNameToFilterType(String filerName) {
         switch (filerName) {
             case "limitedLines":
-                return FilterType.LIMITED_LINES;
+                return FilterType.FILTER_ON_SPECIFIC_FIRST_LINES;
             case "Element":
-                return FilterType.ELEMENT;
+                return FilterType.FILTER_ON_SPECIFIC_ELEMENT;
             case "Column":
-                return FilterType.COLUMN;
+                return FilterType.FILTER_ON_SPECIFIC_COLUMN;
             default:
-                throw new IllegalArgumentException("Filter does not exists");
+                throw new IllegalArgumentException("Filter: " + filerName + " does not exists");
         }
     }
 }

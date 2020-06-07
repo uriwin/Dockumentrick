@@ -15,8 +15,8 @@ public class ManipulateAction implements IManipulateAction {
     }
 
     @Override
-    public String manipulateData(String fileChunkData) {
-        return dataManipulator.manipulateData(fileChunkData);
+    public String manipulateDataAction(String data) {
+        return dataManipulator.manipulateDataAction(data);
     }
 
     @Override
@@ -24,26 +24,19 @@ public class ManipulateAction implements IManipulateAction {
         return dataManipulator.isByteRequiredForAction(data);
     }
 
-    @Override
-    public ManipulateActionsType getManipulateActionType() {
-        return dataManipulator.getManipulateActionType();
-    }
-
     public void addManipulatorFilter(IFilter manipulatorFilter) {
         this.manipulatorFilters.add(manipulatorFilter);
     }
 
-    public boolean isAllFiltersActivated() {
-        if (!isActionHaveFilters())
-            return true;
+    public boolean areAllFiltersActivated() {
         for (IFilter manipulatorFilter : manipulatorFilters) {
-            if (!manipulatorFilter.isFilterActivated())
+            if (!manipulatorFilter.isDataCanBeManipulated())
                 return false;
         }
         return true;
     }
 
-    public boolean isActionHaveFilters() {
+    public boolean doesActionHaveFilters() {
         return manipulatorFilters.size() > 0;
     }
 
@@ -53,7 +46,7 @@ public class ManipulateAction implements IManipulateAction {
 
 
     public void updateFilters(int fileByte) {
-        if (isActionHaveFilters()) {
+        if (doesActionHaveFilters()) {
             for (IFilter manipulatorFilter : getManipulatorFilters()) {
                 manipulatorFilter.updateFilter(fileByte);
             }

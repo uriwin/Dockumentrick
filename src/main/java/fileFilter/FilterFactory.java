@@ -5,13 +5,13 @@ import fileFilter.filters.LimitedLinesFilter;
 import fileFilter.filters.XmlElementFilter;
 
 public class FilterFactory {
-    public AbstractFilter getFilter(FilterType filterType, String filterArgument) {
+    public IFilter getFilter(FilterType filterType, String filterArgument) {
         switch (filterType) {
-            case LIMITED_LINES:
+            case FILTER_ON_SPECIFIC_FIRST_LINES:
                 return new LimitedLinesFilter(Integer.parseInt(filterArgument));
-            case ELEMENT:
+            case FILTER_ON_SPECIFIC_ELEMENT:
                 return new XmlElementFilter(filterArgument);
-            case COLUMN:
+            case FILTER_ON_SPECIFIC_COLUMN:
                 return new CsvColumnFilter(Integer.parseInt(filterArgument));
             default:
                 throw new IllegalArgumentException("No filter found");

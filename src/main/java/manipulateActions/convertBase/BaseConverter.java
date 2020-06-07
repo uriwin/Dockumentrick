@@ -1,21 +1,17 @@
 package manipulateActions.convertBase;
 
-import manipulateActions.AbstractManipulateAction;
-import manipulateActions.ManipulateActionsType;
+import manipulateActions.IManipulateAction;
 
-public class BaseConverter extends AbstractManipulateAction {
+public class BaseConverter implements IManipulateAction {
     private Integer baseToChange;
     private Integer currentBase;
-    private ManipulateActionsType manipulateActionType;
 
-    public BaseConverter(Integer baseToChange, Integer currentBase, ManipulateActionsType manipulateActionType) {
-        super(manipulateActionType);
+    public BaseConverter(Integer baseToChange, Integer currentBase) {
         this.baseToChange = baseToChange;
         this.currentBase = currentBase;
-        this.manipulateActionType = ManipulateActionsType.BaseConverter;
     }
 
-    public String manipulateData(String data) {
+    public String manipulateDataAction(String data) {
         return convertFromBaseToBase(data, this.currentBase, this.baseToChange);
     }
 

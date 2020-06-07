@@ -1,26 +1,23 @@
 package manipulateActions;
 
-public class StringEncloser extends AbstractManipulateAction {
+public class StringEncloser implements IManipulateAction{
 
     private String stringToEnclose;
     private String encloseString;
     private String currentData;
 
-    public StringEncloser(String stringToEnclose, String encloseString, ManipulateActionsType manipulateActionType) {
-        super(manipulateActionType);
+    public StringEncloser(String stringToEnclose, String encloseString) {
         this.stringToEnclose = stringToEnclose;
         this.encloseString = encloseString;
         this.currentData = "";
     }
 
-    @Override
-    public String manipulateData(String data) {
+    public String manipulateDataAction(String data) {
         if (data.equals(stringToEnclose))
             return this.encloseString.concat(data).concat(this.encloseString);
         return data;
     }
 
-    @Override
     public boolean isByteRequiredForAction(int data) {
         if (currentData.length() < stringToEnclose.length()) {
             if (stringToEnclose.charAt(currentData.length()) == (char) data) {

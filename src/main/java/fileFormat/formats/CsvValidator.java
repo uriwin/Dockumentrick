@@ -1,12 +1,13 @@
 package fileFormat.formats;
 
-import fileFormat.AbstractFileFormat;
+import fileFormat.BaseFileValidator;
 import fileFormat.FileFormatType;
 
-public class Csv extends AbstractFileFormat {
+public class CsvValidator extends BaseFileValidator {
 
-    public Csv(FileFormatType fileFormatType) {
-        this.fileFormatType = fileFormatType;
+
+    public CsvValidator(FileFormatType fileFormatType) {
+        super(fileFormatType);
     }
 
     @Override

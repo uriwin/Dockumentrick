@@ -1,33 +1,45 @@
 package inputStream;
 
-import fileFormat.AbstractFileFormat;
+import fileFormat.BaseFileValidator;
 import manipulateActions.ManipulateAction;
 
+import java.io.BufferedInputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class DataManipulatorInputStream extends FilterInputStream {
+public class DataManipulatorInputStream extends BufferedInputStream {
 
-    private AbstractFileFormat fileFormat;
+    private BaseFileValidator fileFormat;
+
     private ManipulateAction dataManipulatorAction;
+
     private byte[] dataToReturnBuffer;
+
     private int dataToReturnPos;
+
     private int dataToReturnCount;
+
     private int lastByteRead;
 
-    public DataManipulatorInputStream(InputStream inputStream, AbstractFileFormat fileFormat,
+
+
+    public DataManipulatorInputStream(InputStream inputStream, BaseFileValidator fileFormat,
                                       ManipulateAction dataManipulatorAction) throws IOException {
         super(inputStream);
-        this.in = inputStream;
+
         this.fileFormat = fileFormat;
+
         this.dataManipulatorAction = dataManipulatorAction;
+
         this.dataToReturnCount = this.dataToReturnPos = 0;
+
         this.lastByteRead = -2;
     }
 
+
     @Override
-    public int read() throws IOException {
+    public synchronized int read() throws IOException{
         if (dataToReturnCount == dataToReturnPos) {
             if (!refillDataToReturnBuffer())
                 return -1;
@@ -41,6 +53,7 @@ public class DataManipulatorInputStream extends FilterInputStream {
         if (fileByte == -1) {
             return false;
         }
+
         String dataToReturn = getDataToReturn(fileByte);
         dataToReturnBuffer = dataToReturn.getBytes();
         dataToReturnPos = 0;
@@ -52,7 +65,7 @@ public class DataManipulatorInputStream extends FilterInputStream {
         int fileByteToManipulate;
         if (lastByteRead == -2)
             fileByteToManipulate = in.read();
-        else{
+        else {
             fileByteToManipulate = lastByteRead;
             lastByteRead = -2;
         }
@@ -62,7 +75,7 @@ public class DataManipulatorInputStream extends FilterInputStream {
     public boolean isFileByteToManipulate(int fileByte) {
         if (fileFormat.isByteRelatedToFileFormat(fileByte))
             return false;
-        if (!dataManipulatorAction.isAllFiltersActivated())
+        if (!dataManipulatorAction.areAllFiltersActivated())
             return false;
         return dataManipulatorAction.isByteRequiredForAction(fileByte);
     }
@@ -71,22 +84,22 @@ public class DataManipulatorInputStream extends FilterInputStream {
     public String getDataToReturn(int fileByte) throws IOException {
         StringBuilder dataToManipulate = new StringBuilder();
         String dataToReturn = "";
+        dataManipulatorAction.updateFilters(fileByte);
         boolean isFileByteToManipulate = isFileByteToManipulate(fileByte);
 
         if (!isFileByteToManipulate) {
-            dataManipulatorAction.updateFilters(fileByte);
             dataToReturn += (char) fileByte;
             return dataToReturn;
         }
 
         while (isFileByteToManipulate) {
             dataToManipulate.append((char) fileByte);
-            dataManipulatorAction.updateFilters(fileByte);
             fileByte = in.read();
+            dataManipulatorAction.updateFilters(fileByte);
             isFileByteToManipulate = isFileByteToManipulate(fileByte);
         }
         lastByteRead = fileByte;
-        dataToReturn = dataManipulatorAction.manipulateData(dataToManipulate.toString());
+        dataToReturn = dataManipulatorAction.manipulateDataAction(dataToManipulate.toString());
 
         return dataToReturn;
     }

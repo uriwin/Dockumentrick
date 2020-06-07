@@ -1,7 +1,7 @@
 package fileFilter;
 
 public enum FilterType {
-    ELEMENT,
-    COLUMN,
-    LIMITED_LINES
+    FILTER_ON_SPECIFIC_ELEMENT,
+    FILTER_ON_SPECIFIC_COLUMN,
+    FILTER_ON_SPECIFIC_FIRST_LINES
 }
