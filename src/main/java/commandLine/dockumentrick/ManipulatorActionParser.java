@@ -1,14 +1,15 @@
-package cli.dockumentrick;
+package commandLine.dockumentrick;
 
-import cli.StringToEnumTypeConverter;
+import commandLine.StringToEnumTypeConverter;
 import manipulateActions.ManipulateAction;
-import manipulateActions.EscapeCharacterAppender;
+import manipulateActions.actions.EscapeCharacterAppender;
 import manipulateActions.ManipulateActionsType;
-import manipulateActions.StringEncloser;
-import manipulateActions.convertBase.BaseConverter;
+import manipulateActions.actions.StringEncloser;
+import manipulateActions.actions.BaseConverter;
 import manipulateActions.convertBase.BaseTypeConverter;
 import fileFilter.*;
 import org.apache.commons.cli.Option;
+import status.IStatus;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,7 +28,7 @@ public class ManipulatorActionParser {
                 dataManipulatorActions.add(manipulateAction);
             } catch (IllegalArgumentException e) {
                 ManipulateAction lastDataManipulatorAction = dataManipulatorActions.get(dataManipulatorActions.size() - 1);
-                IFilter filter = getFilter(argumentName, option.getValue());
+                IStatus filter = getFilter(argumentName, option.getValue());
                 lastDataManipulatorAction.addManipulatorFilter(filter);
             }
         }
@@ -57,7 +58,7 @@ public class ManipulatorActionParser {
         return option.getValue();
     }
 
-    public IFilter getFilter(String argument, String argumentValue) {
+    public IStatus getFilter(String argument, String argumentValue) {
         StringToEnumTypeConverter stringToEnumConverter = new StringToEnumTypeConverter();
         FilterFactory filterFactory = new FilterFactory();
 

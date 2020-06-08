@@ -1,35 +1,31 @@
 package fileFilter.filters;
 
-import fileFilter.FilterState;
-import fileFilter.IFilter;
+import status.AbstractStatus;
+import status.Status;
 
-public class CsvColumnFilter implements IFilter {
+public class CsvColumnFilter extends AbstractStatus {
     private int columnPositionToFilter;
-    private int currentColumnPosition;
 
+    private int currentColumnPosition;
 
     public CsvColumnFilter(int columnPositionToFilter) {
         this.currentColumnPosition = 0;
+
         this.columnPositionToFilter = columnPositionToFilter;
+
+        status = Status.DATA_CAN_NOT_MANIPULATE;
     }
 
-//    @Override
-//    public void updateFilter(int fileByte) {
-//        if ((char) fileByte == ',')
-//            currentColumnPosition += 1;
-//        if ((char) fileByte =='\n')
-//            currentColumnPosition = 0;
-//    }
-
-    public FilterState isDataCanBeManipulated(char data)
-    {
+    public void updateStatus(char data) {
         if (data == ',')
             currentColumnPosition += 1;
-        if (data =='\n')
+        if (data == '\n')
             currentColumnPosition = 0;
-        if (currentColumnPosition == columnPositionToFilter){
-            return FilterState.YES;
+        if (currentColumnPosition == columnPositionToFilter) {
+            status = Status.DATA_CAN_MANIPULATE;
         }
-        return FilterState.NO;
+        else{
+            status = Status.DATA_CAN_NOT_MANIPULATE;
+        }
     }
 }

@@ -1,9 +1,7 @@
 package manipulateActions;
 
-import java.util.List;
+import status.IStatus;
 
-public interface IManipulateAction {
+public interface IManipulateAction extends IStatus {
     public String manipulateDataAction(String data);
-
-    public boolean isByteRequiredForAction(int data);
 }

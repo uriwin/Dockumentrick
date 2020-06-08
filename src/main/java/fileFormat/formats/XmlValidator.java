@@ -1,5 +1,6 @@
 package fileFormat.formats;
 
+import status.Status;
 import fileFormat.BaseFileValidator;
 import fileFormat.FileFormatType;
 
@@ -19,19 +20,21 @@ public class XmlValidator extends BaseFileValidator {
     }
 
     @Override
-    public boolean isByteRelatedToFileFormat(int data) {
+    public void updateStatus(char data) {
         if (isInMiddleOfTag) {
-            if ((char) data == END_OF_TAG){
+            if (data == END_OF_TAG){
                 isInMiddleOfTag = false;
             }
-            return true;
+            status = Status.DATA_CAN_NOT_MANIPULATE;
         }
         else {
-            if ((char) data == START_OF_TAG) {
+            if (data == START_OF_TAG) {
                 isInMiddleOfTag = true;
-                return true;
+                status = Status.DATA_CAN_NOT_MANIPULATE;
             }
-            return false;
+            else{
+                status = Status.DATA_CAN_MANIPULATE;
+            }
         }
     }
 

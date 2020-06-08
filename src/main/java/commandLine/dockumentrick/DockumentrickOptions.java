@@ -1,4 +1,4 @@
-package cli.dockumentrick;
+package commandLine.dockumentrick;
 
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;

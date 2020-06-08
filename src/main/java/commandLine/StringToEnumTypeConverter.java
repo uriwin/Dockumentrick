@@ -1,4 +1,4 @@
-package cli;
+package commandLine;
 
 import fileFilter.FilterType;
 import manipulateActions.ManipulateActionsType;

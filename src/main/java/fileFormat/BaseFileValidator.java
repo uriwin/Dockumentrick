@@ -1,15 +1,16 @@
 package fileFormat;
 
-import fileFilter.IFilter;
+import status.AbstractStatus;
+import status.Status;
 
-public class BaseFileValidator {
+public class BaseFileValidator extends AbstractStatus {
     public FileFormatType fileFormatType;
 
-    public BaseFileValidator(FileFormatType fileFormatType){
+    public BaseFileValidator(FileFormatType fileFormatType) {
         this.fileFormatType = fileFormatType;
+
+        this.status = Status.DATA_CAN_MANIPULATE;
     }
 
-    public boolean isByteRelatedToFileFormat(int data) {
-        return false;
-    }
+    public void updateStatus(char data) {}
 }

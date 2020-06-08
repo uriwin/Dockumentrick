@@ -3,9 +3,10 @@ package fileFilter;
 import fileFilter.filters.CsvColumnFilter;
 import fileFilter.filters.LimitedLinesFilter;
 import fileFilter.filters.XmlElementFilter;
+import status.IStatus;
 
 public class FilterFactory {
-    public IFilter getFilter(FilterType filterType, String filterArgument) {
+    public IStatus getFilter(FilterType filterType, String filterArgument) {
         switch (filterType) {
             case FILTER_ON_SPECIFIC_FIRST_LINES:
                 return new LimitedLinesFilter(Integer.parseInt(filterArgument));

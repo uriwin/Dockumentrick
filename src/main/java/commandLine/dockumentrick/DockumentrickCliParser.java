@@ -1,4 +1,4 @@
-package cli.dockumentrick;
+package commandLine.dockumentrick;
 
 import fileFormat.FileFormatType;
 import manipulateActions.ManipulateAction;

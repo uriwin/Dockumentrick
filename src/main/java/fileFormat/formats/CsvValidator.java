@@ -1,5 +1,6 @@
 package fileFormat.formats;
 
+import status.Status;
 import fileFormat.BaseFileValidator;
 import fileFormat.FileFormatType;
 
@@ -11,8 +12,12 @@ public class CsvValidator extends BaseFileValidator {
     }
 
     @Override
-    public boolean isByteRelatedToFileFormat(int data) {
-        return (char) data == ',' || (char) data == '\n';
+    public void updateStatus(char data)
+    {
+        if (data == ',' || data == '\n'){
+            status = Status.DATA_CAN_NOT_MANIPULATE;
+        }
+        status = Status.DATA_CAN_MANIPULATE;
     }
 
 }

@@ -1,9 +1,9 @@
 package fileFilter.filters;
 
-import fileFilter.FilterState;
-import fileFilter.IFilter;
+import status.AbstractStatus;
+import status.Status;
 
-public class XmlElementFilter implements IFilter {
+public class XmlElementFilter extends AbstractStatus {
     public String tagData;
 
     private boolean isInMiddleOfTag;
@@ -27,38 +27,35 @@ public class XmlElementFilter implements IFilter {
         this.isBetweenTagToFilter = false;
     }
 
-    public FilterState isDataCanBeManipulated(char data){
+    public void updateStatus(char data){
         if (isInMiddleOfTag){
-            return handleMiddleOfTag(data);
-        }
-        else {
-            if (isTagStarted(data)){
-                tagData += data;
-                isInMiddleOfTag = true;
-                return FilterState.MORE_DATA_NEEDED;
+            tagData += data;
+            if (isEqualToEndOfTag(data)){
+                handleEndOfTag();
             }
-            return FilterState.NO;
+        }
+        else if (isEqualToStartOfTag(data)){
+            isInMiddleOfTag = true;
+            tagData += data;
+            status = Status.MORE_DATA_NEEDED;
         }
     }
-    public boolean isTagCompleted(char data){
+    public boolean isEqualToEndOfTag(char data){
         return data == '>';
     }
 
-    public boolean isTagStarted(char data){
+    public boolean isEqualToStartOfTag(char data){
         return (data == '<');
     }
 
-    public FilterState handleMiddleOfTag(char data){
-        tagData += data;
-        if (isTagCompleted(data)){
-            isInMiddleOfTag = false;
-            if (tagData.equals(closingTagToFilter)){
-                tagData = "";
-                return FilterState.YES;
-            }
-            tagData = "";
-            return FilterState.NO;
+    public void handleEndOfTag(){
+        if (tagData.equals(closingTagToFilter)) {
+            status = Status.DATA_CAN_NOT_MANIPULATE;
         }
-        return FilterState.MORE_DATA_NEEDED;
+        else if(tagData.equals(startingTagToFilter)){
+            status = Status.DATA_CAN_MANIPULATE;
+        }
+        isInMiddleOfTag = false;
+        tagData = "";
     }
 }
