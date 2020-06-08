@@ -1,5 +1,5 @@
-import commandLine.dockumentrick.DockumentrickCliParser;
-import commandLine.dockumentrick.DockumentrickOptions;
+import commandLine.manipulateActionsExtractor.commandLineActionsExtractor;
+import commandLine.clientArguments.CommandLineArguments;
 import inputStream.DataManipulatorInputStreamDecorator;
 import fileETL.FileETL;
 import fileFormat.FileFormatType;
@@ -14,10 +14,10 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException, ParseException {
-        DockumentrickOptions cliOptions = new DockumentrickOptions();
+        CommandLineArguments cliOptions = new CommandLineArguments();
         CommandLineParser parser = new DefaultParser();
         CommandLine commandLine = parser.parse(cliOptions.cliOptions, args);
-        DockumentrickCliParser dockumentrickCliParser = new DockumentrickCliParser(commandLine);
+        commandLineActionsExtractor dockumentrickCliParser = new commandLineActionsExtractor(commandLine);
 
         String inputPath = dockumentrickCliParser.getInputFilePath();
         String outputPath = dockumentrickCliParser.getOutputFilePath();

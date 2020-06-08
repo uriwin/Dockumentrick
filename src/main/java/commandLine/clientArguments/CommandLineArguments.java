@@ -1,11 +1,13 @@
-package commandLine.dockumentrick;
+package commandLine.clientArguments;
 
+import commandLine.clientArguments.IClientArguments;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
-public class DockumentrickOptions {
-    public Options cliOptions;
-    public DockumentrickOptions(){
+public class CommandLineArguments implements IClientArguments {
+    private Options cliOptions;
+
+    public CommandLineArguments(){
         this.cliOptions = new Options();
         this.cliOptions.addOption(getInputFilePathOption());
         this.cliOptions.addOption(getBaseConverterOption());
@@ -24,9 +26,7 @@ public class DockumentrickOptions {
     public Option getEncloseOption() {
         return Option.builder().longOpt("enclose").hasArg().build();
     }
-    public Option getEncloseByOption() {
-        return Option.builder().longOpt("encloseBy").hasArg().build();
-    }
+    public Option getEncloseByOption() { return Option.builder().longOpt("encloseBy").hasArg().build(); }
     public Option getEscapeCharacterAppenderOption() {
         return Option.builder().longOpt("escapeChar").hasArg().build();
     }
@@ -38,4 +38,8 @@ public class DockumentrickOptions {
     }
     public Option getCsvColumnFilter(){return Option.builder().longOpt("Column").hasArg().build();}
 
+    @Override
+    public Options getClientOptions() {
+        return cliOptions;
+    }
 }

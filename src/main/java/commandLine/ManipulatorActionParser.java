@@ -1,6 +1,7 @@
-package commandLine.dockumentrick;
+package commandLine;
 
-import commandLine.StringToEnumTypeConverter;
+import commandLine.convertStringToEnum.StringToActionEnumConverter;
+import commandLine.convertStringToEnum.StringToFilterEnumConverter;
 import manipulateActions.ManipulateAction;
 import manipulateActions.actions.EscapeCharacterAppender;
 import manipulateActions.ManipulateActionsType;
@@ -36,8 +37,8 @@ public class ManipulatorActionParser {
     }
 
     public ManipulateAction getDataManipulationAction(Option option, Iterator<Option> iterator) {
-        StringToEnumTypeConverter stringToEnumConverter = new StringToEnumTypeConverter();
-        ManipulateActionsType manipulateActionType = stringToEnumConverter.convertActionNameToActionType(option.getLongOpt());
+        StringToActionEnumConverter stringToActionEnumConverter = new StringToActionEnumConverter();
+        ManipulateActionsType manipulateActionType = stringToActionEnumConverter.convertActionNameToActionType(option.getLongOpt());
         switch (manipulateActionType) {
             case BaseConverter:
                 BaseTypeConverter baseTypeConverter = new BaseTypeConverter();
@@ -59,10 +60,10 @@ public class ManipulatorActionParser {
     }
 
     public IStatus getFilter(String argument, String argumentValue) {
-        StringToEnumTypeConverter stringToEnumConverter = new StringToEnumTypeConverter();
+        StringToFilterEnumConverter stringToFilterEnumConverter = new StringToFilterEnumConverter();
         FilterFactory filterFactory = new FilterFactory();
 
-        FilterType filterType = stringToEnumConverter.convertFilterNameToFilterType(argument);
+        FilterType filterType = stringToFilterEnumConverter.convertFilterNameToFilterType(argument);
         return filterFactory.getFilter(filterType, argumentValue);
     }
 }
