@@ -1,8 +1,6 @@
 package manipulateActions.actions;
 
 import manipulateActions.AbstractManipulateAction;
-import manipulateActions.IManipulateAction;
-import status.AbstractStatus;
 import status.Status;
 
 public class BaseConverter extends AbstractManipulateAction {
