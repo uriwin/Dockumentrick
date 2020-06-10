@@ -35,7 +35,8 @@ public class CsvColumnFilter extends AbstractStatus {
     }
 
     public void updateIsInQuotes(char data){
-        if (data == '\"'){
+        if (data == '\"' || data == '\'')
+        {
             isInQuotes = !isInQuotes;
         }
     }
