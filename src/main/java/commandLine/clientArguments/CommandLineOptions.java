@@ -1,13 +1,12 @@
 package commandLine.clientArguments;
 
-import commandLine.clientArguments.IClientArguments;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
-public class CommandLineArguments implements IClientArguments {
+public class CommandLineOptions implements IOption {
     private Options cliOptions;
 
-    public CommandLineArguments(){
+    public CommandLineOptions(){
         this.cliOptions = new Options();
         this.cliOptions.addOption(getInputFilePathOption());
         this.cliOptions.addOption(getOutputFilePathOption());
@@ -41,7 +40,7 @@ public class CommandLineArguments implements IClientArguments {
     public Option getCsvColumnFilter(){return Option.builder().longOpt("Column").hasArg().build();}
 
     @Override
-    public Options getClientOptions() {
+    public Options getOptions() {
         return cliOptions;
     }
 }

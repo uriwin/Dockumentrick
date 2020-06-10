@@ -41,11 +41,6 @@ public class ManipulatorInputStream extends InputStream {
         return dataBuffer[dataBufferPos++];
     }
 
-//    @Override
-//    public synchronized int read(byte[] b, int off, int len) throws IOException {
-//        return super.read(b, off, len);
-//    }
-
     public String fillDataBuffer(char data) throws IOException {
         String dataToFill = getDataToFill(data);
         if (dataManipulatorAction.getStatus() == Status.DATA_CAN_MANIPULATE
