@@ -20,3 +20,6 @@ YourProjetcName/app/build/
 app/build/
 *app/build/
 /target
+*.csv
+*.xml
+*.txt
