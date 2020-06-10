@@ -1,4 +1,4 @@
-package commandLine.extracor.sourceExtractor;
+package commandLine.extracte.sourceExtractor;
 
 import org.apache.commons.cli.MissingArgumentException;
 

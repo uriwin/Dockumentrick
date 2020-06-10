@@ -30,7 +30,7 @@ public class CommandLineArguments implements IClientArguments {
         return Option.builder().longOpt("enclose").hasArg().numberOfArgs(2).build();
     }
     public Option getEscapeCharacterAppenderOption() {
-        return Option.builder().longOpt("escapeChar").numberOfArgs(Option.UNLIMITED_VALUES).hasArg().build();
+        return Option.builder().longOpt("escapeChar").hasArg().build();
     }
     public Option getLimitedLinesFilterOption(){
         return Option.builder().longOpt("limitedLines").hasArg().build();

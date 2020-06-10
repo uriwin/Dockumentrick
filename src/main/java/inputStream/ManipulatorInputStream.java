@@ -7,7 +7,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ManipulatorInputStream extends BufferedInputStream {
+public class ManipulatorInputStream extends InputStream {
 
     private ManipulateAction dataManipulatorAction;
 
@@ -17,8 +17,10 @@ public class ManipulatorInputStream extends BufferedInputStream {
 
     private int lastByteRead;
 
+    private InputStream in;
+
     public ManipulatorInputStream(InputStream in, ManipulateAction dataManipulatorAction) throws IOException {
-        super(in);
+        this.in = in;
 
         this.dataManipulatorAction = dataManipulatorAction;
 
@@ -38,6 +40,11 @@ public class ManipulatorInputStream extends BufferedInputStream {
         }
         return dataBuffer[dataBufferPos++];
     }
+
+//    @Override
+//    public synchronized int read(byte[] b, int off, int len) throws IOException {
+//        return super.read(b, off, len);
+//    }
 
     public String fillDataBuffer(char data) throws IOException {
         String dataToFill = getDataToFill(data);

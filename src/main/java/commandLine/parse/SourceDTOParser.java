@@ -1,12 +1,12 @@
-package commandLine.parser;
+package commandLine.parse;
 
-import commandLine.extracor.sourceExtractor.SourceDTO;
-import commandLine.extracor.sourceExtractor.SourceType;
+import commandLine.extracte.sourceExtractor.SourceDTO;
+import commandLine.extracte.sourceExtractor.SourceType;
 
 import java.io.*;
 
-public class SourceParser {
-    public InputStream getInputStream(SourceDTO sourceDTO) throws FileNotFoundException {
+public class SourceDTOParser {
+    public InputStream parseInputSourceDTO(SourceDTO sourceDTO) throws FileNotFoundException {
         SourceType sourceType = sourceDTO.getSourceType();
         switch (sourceType){
             case FILE:
@@ -16,7 +16,7 @@ public class SourceParser {
         }
     }
 
-    public OutputStream getOutputStream(SourceDTO sourceDTO) throws FileNotFoundException {
+    public OutputStream parseOutputSourceDTO(SourceDTO sourceDTO) throws FileNotFoundException {
         SourceType sourceType = sourceDTO.getSourceType();
         switch (sourceType){
             case FILE:

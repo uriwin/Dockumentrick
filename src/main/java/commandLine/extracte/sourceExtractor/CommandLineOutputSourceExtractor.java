@@ -1,4 +1,4 @@
-package commandLine.extracor.sourceExtractor;
+package commandLine.extracte.sourceExtractor;
 
 import commandLine.clientArguments.ArgumentTypeValidator;
 import commandLine.convertStringToEnum.StringToOutputSourceEnumConverter;

@@ -4,7 +4,7 @@ import commandLine.convertStringToEnum.StringToActionEnumConverter;
 import commandLine.convertStringToEnum.StringToFilterEnumConverter;
 import commandLine.convertStringToEnum.StringToInputSourceEnumConverter;
 import commandLine.convertStringToEnum.StringToOutputSourceEnumConverter;
-import commandLine.extracor.sourceExtractor.SourceType;
+import commandLine.extracte.sourceExtractor.SourceType;
 import fileFilter.FilterType;
 import manipulateActions.ManipulateActionsType;
 
@@ -29,7 +29,7 @@ public class ArgumentTypeValidator {
             return false;
         }
     }
-    public boolean isArgumentConnectedToInputFileFormat(String argumentName){
+    public boolean isArgumentConnectedToInputFileSource(String argumentName){
         return argumentName.equals("inputFilePath");
     }
 

@@ -1,6 +1,6 @@
 package commandLine.convertStringToEnum;
 
-import commandLine.extracor.sourceExtractor.SourceType;
+import commandLine.extracte.sourceExtractor.SourceType;
 
 public class StringToOutputSourceEnumConverter {
     public SourceType getOutputSourceType(String sourceType) {

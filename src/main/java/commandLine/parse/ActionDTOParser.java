@@ -1,8 +1,8 @@
-package commandLine.parser;
+package commandLine.parse;
 
 import commandLine.convertStringToEnum.StringToActionEnumConverter;
 import commandLine.convertStringToEnum.StringToFilterEnumConverter;
-import commandLine.extracor.manipulateActionsExtractor.ActionDTO;
+import commandLine.extracte.manipulateActionsExtractor.ActionDTO;
 import fileFilter.FilterFactory;
 import fileFilter.FilterType;
 import manipulateActions.ManipulateAction;
@@ -16,10 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ManipulateActionParser {
+public class ActionDTOParser {
 
-    public ManipulateActionParser(){
-    }
+    public ActionDTOParser(){}
 
     public List<ManipulateAction> parseActionsDTO(List<ActionDTO> actionDTOList){
         List<ManipulateAction> manipulateActions = new ArrayList<ManipulateAction>();

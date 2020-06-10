@@ -1,4 +1,4 @@
-package commandLine.extracor.manipulateActionsExtractor;
+package commandLine.extracte.manipulateActionsExtractor;
 
 import commandLine.clientArguments.ArgumentTypeValidator;
 import org.apache.commons.cli.CommandLine;
@@ -32,7 +32,7 @@ public class CommandLineActionsExtractor implements IActionsExtractor {
                 }
                 lastActionDTO = initializeActionDTO(argument, globalFilters);
             }
-            else if (argumentTypeValidator.isArgumentConnectedToInputFileFormat(argumentName)){
+            else if (argumentTypeValidator.isArgumentConnectedToInputFileSource(argumentName)){
                 globalFilters.put(argumentName, FilenameUtils.getExtension(argument.getValue()).toUpperCase());
             }
             else if (argumentTypeValidator.isArgumentFilter(argumentName)) {

@@ -1,4 +1,4 @@
-package commandLine.extracor.manipulateActionsExtractor;
+package commandLine.extracte.manipulateActionsExtractor;
 
 import java.util.List;
 
