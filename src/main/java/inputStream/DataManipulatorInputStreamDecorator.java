@@ -1,7 +1,5 @@
 package inputStream;
 
-import fileFormat.FileFormatFactory;
-import fileFormat.FileFormatType;
 import manipulateActions.ManipulateAction;
 
 import java.io.IOException;

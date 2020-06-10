@@ -5,14 +5,14 @@ import fileFormat.formats.CsvValidator;
 import fileFormat.formats.XmlValidator;
 
 public class FileFormatFactory {
-    public IStatus getFileFormat(FileFormatType fileFormatType) {
-        switch (fileFormatType) {
-            case TXT:
-                return new BaseFileValidator(fileFormatType);
-            case CSV:
-                return new CsvValidator(fileFormatType);
-            case XML:
-                return new XmlValidator(fileFormatType);
+    public IStatus getFileFormatValidator(FileFormatValidatorType fileFormatValidatorType) {
+        switch (fileFormatValidatorType) {
+            case TXT_VALIDATOR:
+                return new BaseFileValidator(fileFormatValidatorType);
+            case CSV_VALIDATOR:
+                return new CsvValidator(fileFormatValidatorType);
+            case XML_VALIDATOR:
+                return new XmlValidator(fileFormatValidatorType);
             default:
                 throw new IllegalArgumentException("unsupported file type");
         }

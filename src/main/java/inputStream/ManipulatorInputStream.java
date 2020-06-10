@@ -69,14 +69,14 @@ public class ManipulatorInputStream extends BufferedInputStream {
         while (dataManipulatorAction.getStatus() == Status.MORE_DATA_NEEDED
                 && !dataManipulatorAction.isFiltersStatusBad()) {
             dataToReturn.append(data);
-            data = (char) in.read();
+            lastByteRead = in.read();
+            data = (char) lastByteRead;
             dataManipulatorAction.updateStatus(data);
             if (dataManipulatorAction.getStatus() != Status.MORE_DATA_NEEDED){
                 break;
             }
             dataManipulatorAction.updateFiltersStatus(data);
         }
-        lastByteRead = (int) data;
         return dataToReturn.toString();
     }
 }

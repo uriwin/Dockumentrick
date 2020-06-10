@@ -24,20 +24,17 @@ public class ManipulateActionParser {
     public List<ManipulateAction> parseActionsDTO(List<ActionDTO> actionDTOList){
         List<ManipulateAction> manipulateActions = new ArrayList<ManipulateAction>();
         for (ActionDTO actionDTO: actionDTOList){
-            manipulateActions.add(parseActionDTO(actionDTO));
+            ManipulateAction manipulateAction = parseAction(actionDTO.getManipulateActionName(), actionDTO.getActionArguments());
+            manipulateAction = parseFilters(manipulateAction, actionDTO.getActionFilters());
+            manipulateActions.add(manipulateAction);
         }
         return manipulateActions;
     }
 
-    public ManipulateAction parseActionDTO(ActionDTO actionDTO){
-        ManipulateAction manipulateAction = getManipulationAction(actionDTO);
-        return addFiltersToAction(manipulateAction, actionDTO.getActionFilters());
-    }
-
-    public ManipulateAction getManipulationAction(ActionDTO actionDTO)
+    public ManipulateAction parseAction(String actionName, List<String> actionArguments)
     {
-        ManipulateActionsType manipulateActionsType = getManipulationActionType(actionDTO.getManipulateAction());
-        List<String> actionArguments = actionDTO.getActionArguments();
+        ManipulateActionsType manipulateActionsType = getManipulationActionType(actionName);
+
         switch (manipulateActionsType) {
             case BaseConverter:
                 BaseTypeConverter baseTypeConverter = new BaseTypeConverter();
@@ -51,11 +48,11 @@ public class ManipulateActionParser {
                 String encloseByValue = actionArguments.get(1);
                 return new ManipulateAction(new StringEncloser(stringToEnclose, encloseByValue));
             default:
-                throw new IllegalArgumentException("No data manipulation action found");
+                throw new IllegalArgumentException("No action: " + actionName + " exists");
         }
     }
 
-    public ManipulateAction addFiltersToAction(ManipulateAction manipulateAction, Map<String,String> filters) {
+    public ManipulateAction parseFilters(ManipulateAction manipulateAction, Map<String,String> filters) {
         StringToFilterEnumConverter stringToFilterEnumConverter = new StringToFilterEnumConverter();
         FilterFactory filterFactory = new FilterFactory();
         for(String filterName : filters.keySet()){

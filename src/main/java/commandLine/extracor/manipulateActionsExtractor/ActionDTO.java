@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ActionDTO{
-    private String manipulateAction;
+    private String manipulateActionName;
 
     private List<String> actionArguments;
 
     private Map<String,String> actionFilters;
 
     public ActionDTO(){
-        this.manipulateAction = "";
+        this.manipulateActionName = "";
 
         this.actionArguments = new ArrayList<String>();
 
@@ -28,12 +28,12 @@ public class ActionDTO{
         this.actionFilters.put(filterName, filterValue);
     }
 
-    public void setManipulateAction(String manipulateAction) {
-        this.manipulateAction = manipulateAction;
+    public void setManipulateActionName(String manipulateActionName) {
+        this.manipulateActionName = manipulateActionName;
     }
 
-    public String getManipulateAction() {
-        return manipulateAction;
+    public String getManipulateActionName() {
+        return manipulateActionName;
     }
 
     public List<String> getActionArguments() {
@@ -45,6 +45,6 @@ public class ActionDTO{
     }
 
     public boolean isEmpty(){
-        return manipulateAction.equals("");
+        return manipulateActionName.equals("");
     }
 }

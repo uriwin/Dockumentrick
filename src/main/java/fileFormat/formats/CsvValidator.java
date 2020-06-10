@@ -2,12 +2,12 @@ package fileFormat.formats;
 
 import status.Status;
 import fileFormat.BaseFileValidator;
-import fileFormat.FileFormatType;
+import fileFormat.FileFormatValidatorType;
 
 public class CsvValidator extends BaseFileValidator {
 
 
-    public CsvValidator(FileFormatType fileFormatType) {
+    public CsvValidator(FileFormatValidatorType fileFormatType) {
         super(fileFormatType);
     }
 

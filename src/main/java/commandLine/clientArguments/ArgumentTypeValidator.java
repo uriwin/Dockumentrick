@@ -29,6 +29,9 @@ public class ArgumentTypeValidator {
             return false;
         }
     }
+    public boolean isArgumentConnectedToInputFileFormat(String argumentName){
+        return argumentName.equals("inputFilePath");
+    }
 
     public boolean isArgumentInputSource(String argumentName){
         StringToInputSourceEnumConverter stringToInputSourceEnumConverter = new StringToInputSourceEnumConverter();

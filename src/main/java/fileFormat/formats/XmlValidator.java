@@ -2,7 +2,7 @@ package fileFormat.formats;
 
 import status.Status;
 import fileFormat.BaseFileValidator;
-import fileFormat.FileFormatType;
+import fileFormat.FileFormatValidatorType;
 
 public class XmlValidator extends BaseFileValidator {
     public boolean isInMiddleOfTag;
@@ -11,7 +11,7 @@ public class XmlValidator extends BaseFileValidator {
 
     final static char END_OF_TAG = '>';
 
-    public XmlValidator(FileFormatType fileFormatType) {
+    public XmlValidator(FileFormatValidatorType fileFormatType) {
         super(fileFormatType);
 
         this.isInMiddleOfTag = false;
