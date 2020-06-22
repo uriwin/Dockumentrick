@@ -1,4 +1,4 @@
-package commandLine.clientArguments;
+package arguments;
 
 import fileFilter.FilterType;
 import manipulateActions.ManipulateActionsType;
@@ -9,7 +9,7 @@ public class ArgumentTypeValidator {
         try {
             ManipulateActionsType manipulateActionType = ManipulateActionsType.valueOf(argumentName);
             return true;
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
@@ -18,11 +18,8 @@ public class ArgumentTypeValidator {
         try {
             FilterType filterType = FilterType.valueOf(argumentName);
             return true;
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
-    }
-    public boolean isArgumentConnectedToInputFileSource(String argumentName){
-        return argumentName.equals("inputFilePath");
     }
 }

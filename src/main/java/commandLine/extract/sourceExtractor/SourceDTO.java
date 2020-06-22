@@ -5,9 +5,7 @@ public class SourceDTO {
 
     private String sourceValue;
 
-    public SourceDTO(){
-        this.sourceValue = "";
-    }
+    public SourceDTO(){}
 
     public SourceType getSourceType() {
         return sourceType;

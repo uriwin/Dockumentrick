@@ -7,46 +7,53 @@ import status.Status;
 public class XmlElementFilter extends AbstractStatus {
     private boolean isBuildingElement;
 
-    private String tagData;
+    private String elementData;
 
-    private final String startingTagToFilter;
+    private final String startingElementToFilter;
 
-    private final String closingTagToFilter;
+    private final String closingElementToFilter;
+
+    private boolean isStartingElementCurrentlyAppeared;
 
     public XmlElementFilter(String tagName) {
 
-        this.startingTagToFilter = SpecialCharacters.START_TAG.toChar() + tagName + SpecialCharacters.CLOSE_TAG.toChar();
+        this.startingElementToFilter = SpecialCharacters.START_TAG.toChar() + tagName + SpecialCharacters.CLOSE_TAG.toChar();
 
-        this.closingTagToFilter = SpecialCharacters.START_TAG.toChar() + SpecialCharacters.SLASH.toChar()
+        this.closingElementToFilter = SpecialCharacters.START_TAG.toChar() + SpecialCharacters.SLASH.toChar()
                                     + tagName + SpecialCharacters.CLOSE_TAG.toChar();
 
-        this.tagData = "";
+        this.elementData = "";
 
-        this.isBuildingElement = false;
+        this.isBuildingElement = isStartingElementCurrentlyAppeared = false;
     }
 
     public void updateStatus(char data){
+        if (isStartingElementCurrentlyAppeared){
+            setStatus(Status.DATA_CAN_MANIPULATE);
+            isStartingElementCurrentlyAppeared = false;
+        }
         if (isBuildingElement){
-            tagData += data;
+            elementData += data;
             if (data == SpecialCharacters.CLOSE_TAG.toChar()){
                 handleEndOfTag();
             }
         }
         else if (data == SpecialCharacters.START_TAG.toChar()){
             isBuildingElement = true;
-            tagData += data;
-            status = Status.MORE_DATA_NEEDED;
+            elementData += data;
+            setStatus(Status.MORE_DATA_NEEDED);
         }
     }
 
     private void handleEndOfTag(){
-        if (tagData.equals(closingTagToFilter)) {
-            status = Status.DATA_CAN_NOT_MANIPULATE;
+        if (elementData.equals(closingElementToFilter)) {
+            setStatus(Status.DATA_CAN_NOT_MANIPULATE);
         }
-        else if(tagData.equals(startingTagToFilter)){
-            status = Status.DATA_CAN_MANIPULATE;
+        else if(elementData.equals(startingElementToFilter)){
+            isStartingElementCurrentlyAppeared = true;
+            setStatus(Status.DATA_CAN_NOT_MANIPULATE);
         }
         isBuildingElement = false;
-        tagData = "";
+        elementData = "";
     }
 }

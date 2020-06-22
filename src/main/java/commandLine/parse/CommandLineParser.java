@@ -1,17 +1,20 @@
 package commandLine.parse;
 
 import commandLine.extract.destinationExtractor.DestinationDTO;
-import commandLine.extract.destinationExtractor.IDestinationExtractor;
+import commandLine.extract.destinationExtractor.IDestinationDTOExtractor;
 import commandLine.extract.manipulateActionsExtractor.ActionDTO;
 import commandLine.extract.manipulateActionsExtractor.CommandLineActionsExtractor;
-import commandLine.extract.manipulateActionsExtractor.IActionsExtractor;
-import commandLine.extract.sourceExtractor.CommandLineInputSourceExtractor;
-import commandLine.extract.destinationExtractor.CommandLineOutputSourceExtractor;
-import commandLine.extract.sourceExtractor.ISourceExtractor;
+import commandLine.extract.manipulateActionsExtractor.IActionsDTOExtractor;
+import commandLine.extract.sourceExtractor.CommandLineSourceExtractor;
+import commandLine.extract.destinationExtractor.CommandLineDestinationExtractor;
+import commandLine.extract.sourceExtractor.ISourceDTOExtractor;
 import commandLine.extract.sourceExtractor.SourceDTO;
+import commandLine.extract.sourceExtractor.SourceType;
+import fileFilter.FilterType;
 import inputStream.DataManipulatorInputStreamDecorator;
 import manipulateActions.ManipulateAction;
 import org.apache.commons.cli.*;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,11 +24,11 @@ import java.util.List;
 public class CommandLineParser {
     private CommandLine commandLine;
 
-    private SourceDTOParser sourceDTOParser;
+    private final SourceDTOParser sourceDTOParser;
 
-    private DestinationDTOParser destinationDTOParser;
+    private final DestinationDTOParser destinationDTOParser;
 
-    private ActionDTOParser manipulateActionParser;
+    private final ActionDTOParser manipulateActionParser;
 
     public CommandLineParser(CommandLine commandLine){
         this.commandLine = commandLine;
@@ -38,14 +41,16 @@ public class CommandLineParser {
     }
 
     public InputStream getInputStream() throws MissingArgumentException, IOException {
-        ISourceExtractor inputSourceExtractor = new CommandLineInputSourceExtractor(commandLine);
-        IActionsExtractor actionsExtractor = new CommandLineActionsExtractor(commandLine);
+        ISourceDTOExtractor sourceDTOExtractor = new CommandLineSourceExtractor(commandLine);
+        IActionsDTOExtractor actionsDTOExtractor = new CommandLineActionsExtractor(commandLine);
 
-        SourceDTO inputSourceDTO = inputSourceExtractor.getSource();
-        List<ActionDTO> actionDTOS = actionsExtractor.getActions();
+        SourceDTO sourceDTO = sourceDTOExtractor.getSourceDTO();
+        List<ActionDTO> actionsDTO = actionsDTOExtractor.getActionsDTO();
 
-        InputStream inputStream = sourceDTOParser.parseSourceDTO(inputSourceDTO);
-        List<ManipulateAction> manipulateActions = manipulateActionParser.parseActionsDTO(actionDTOS);
+        addFilterBasedOnSource(sourceDTO, actionsDTO);
+
+        InputStream inputStream = sourceDTOParser.parseSourceDTO(sourceDTO);
+        List<ManipulateAction> manipulateActions = manipulateActionParser.parseActionsDTO(actionsDTO);
 
         DataManipulatorInputStreamDecorator dataManipulatorInputStreamDecorator =
                 new DataManipulatorInputStreamDecorator(manipulateActions, inputStream);
@@ -54,8 +59,19 @@ public class CommandLineParser {
     }
 
     public OutputStream getOutputStream() throws MissingArgumentException, IOException {
-        IDestinationExtractor destinationExtractor = new CommandLineOutputSourceExtractor(commandLine);
-        DestinationDTO destinationDTO = destinationExtractor.getDestination();
+        IDestinationDTOExtractor destinationDTOExtractor = new CommandLineDestinationExtractor(commandLine);
+        DestinationDTO destinationDTO = destinationDTOExtractor.getDestinationDTO();
         return destinationDTOParser.parseDestinationDTO(destinationDTO);
+    }
+
+    private void addFilterBasedOnSource(SourceDTO inputSourceDTO, List<ActionDTO> actionDTOS){
+        if (inputSourceDTO.getSourceType() == SourceType.INPUT_FILE){
+            String fileFormat = FilenameUtils.getExtension(inputSourceDTO.getSourceValue()).toUpperCase();
+            String filterName = FilterType.FILTER_BASED_ON_FILE_TYPE.toString();
+
+            for (ActionDTO actionDTO: actionDTOS){
+                actionDTO.addActionFilter(filterName, fileFormat);
+            }
+        }
     }
 }

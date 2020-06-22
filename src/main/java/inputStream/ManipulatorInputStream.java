@@ -3,7 +3,6 @@ package inputStream;
 import manipulateActions.ManipulateAction;
 import status.Status;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,6 +14,8 @@ public class ManipulatorInputStream extends InputStream {
 
     private int dataBufferPos;
 
+    private int dataBufferNextPos;
+
     private int lastByteRead;
 
     private InputStream in;
@@ -24,52 +25,55 @@ public class ManipulatorInputStream extends InputStream {
 
         this.dataManipulatorAction = dataManipulatorAction;
 
-        this.dataBufferPos = 0;
+        this.dataBufferPos = this.dataBufferNextPos = 0;
 
         this.lastByteRead = in.read();
     }
 
     @Override
     public synchronized int read() throws IOException {
-        if (dataBufferPos == 0 || dataBufferPos == dataBuffer.length) {
+        if (dataBufferNextPos == 0 || dataBufferNextPos == dataBuffer.length) {
             if (lastByteRead == -1) {
                 return lastByteRead;
             }
-            dataBuffer = fillDataBuffer((char) lastByteRead).getBytes();
-            dataBufferPos = 0;
+            dataBuffer = getDataToFill((char) lastByteRead).getBytes();
+            dataBufferPos = dataBufferNextPos = 0;
         }
-        return dataBuffer[dataBufferPos++];
+
+        dataBufferPos = dataBufferNextPos;
+        dataBufferNextPos += 1;
+        return dataBuffer[dataBufferPos];
     }
 
-    public String fillDataBuffer(char data) throws IOException {
-        String dataToFill = getDataToFill(data);
-        if (dataManipulatorAction.getStatus() == Status.DATA_CAN_MANIPULATE
-                && dataManipulatorAction.isFiltersStatusGood()) {
-            return dataManipulatorAction.manipulateDataAction(dataToFill);
-        }
-        return dataToFill;
-    }
+    private String getDataToFill(char data) throws IOException {
+        String dataToReturn;
 
-    public String getDataToFill(char data) throws IOException {
         dataManipulatorAction.updateFiltersStatus(data);
-        if (dataManipulatorAction.isFiltersStatusBad()) {
+        if (dataManipulatorAction.isAtLeastOneFiltersStatusBad()) {
             lastByteRead = in.read();
             return String.valueOf(data);
         }
 
         dataManipulatorAction.updateStatus(data);
         if (dataManipulatorAction.getStatus() == Status.MORE_DATA_NEEDED){
-            return handleMoreDataNeeded(data);
+            dataToReturn = handleMoreDataNeeded(data);
         }
-        lastByteRead = in.read();
-        return String.valueOf(data);
+        else {
+            lastByteRead = in.read();
+            dataToReturn = String.valueOf(data);
+        }
+
+        if (isDataCanManipulate()){
+            return dataManipulatorAction.manipulateDataAction(dataToReturn);
+        }
+        return dataToReturn;
     }
 
-    public String handleMoreDataNeeded(char data) throws IOException {
+    private String handleMoreDataNeeded(char data) throws IOException {
         StringBuilder dataToReturn = new StringBuilder();
 
         while (dataManipulatorAction.getStatus() == Status.MORE_DATA_NEEDED
-                && !dataManipulatorAction.isFiltersStatusBad()) {
+                && !dataManipulatorAction.isAtLeastOneFiltersStatusBad()) {
             dataToReturn.append(data);
             lastByteRead = in.read();
             data = (char) lastByteRead;
@@ -80,5 +84,10 @@ public class ManipulatorInputStream extends InputStream {
             dataManipulatorAction.updateFiltersStatus(data);
         }
         return dataToReturn.toString();
+    }
+
+    private boolean isDataCanManipulate(){
+        return ((dataManipulatorAction.getStatus() == Status.DATA_CAN_MANIPULATE)
+                && (dataManipulatorAction.isAllFiltersStatusGood()));
     }
 }

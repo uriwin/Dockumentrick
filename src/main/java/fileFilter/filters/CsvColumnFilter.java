@@ -22,7 +22,7 @@ public class CsvColumnFilter extends AbstractStatus {
 
         this.isInApostrophe = false;
 
-        status = Status.DATA_CAN_NOT_MANIPULATE;
+        setStatus(Status.DATA_CAN_NOT_MANIPULATE);
     }
 
     public void updateStatus(char data) {
@@ -40,20 +40,20 @@ public class CsvColumnFilter extends AbstractStatus {
 
     private void changeStatus(){
         if (currentColumnPosition == columnPositionToFilter) {
-            status = Status.DATA_CAN_MANIPULATE;
+            setStatus(Status.DATA_CAN_MANIPULATE);
         }
         else{
-            status = Status.DATA_CAN_NOT_MANIPULATE;
+            setStatus(Status.DATA_CAN_NOT_MANIPULATE);
         }
     }
 
-    public void updateIsInQuotes(char data){
+    private void updateIsInQuotes(char data){
         if (data == SpecialCharacters.QUOTES.toChar()){
             isInQuotes = !isInQuotes;
         }
     }
 
-    public void updateIsInApostrophe(char data){
+    private void updateIsInApostrophe(char data){
         if (data == SpecialCharacters.APOSTROPHE.toChar()){
             isInApostrophe = !isInApostrophe;
         }

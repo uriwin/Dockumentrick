@@ -26,9 +26,9 @@ public class CsvValidator extends BaseFileValidator {
         updateIsInApostrophe(data);
 
         if ((isDataRelatedToFileFormat(data)) && (!isInQuotes && !isInApostrophe)){
-            status = Status.DATA_CAN_NOT_MANIPULATE;
+            setStatus(Status.DATA_CAN_NOT_MANIPULATE);
         }
-        status = Status.DATA_CAN_MANIPULATE;
+        setStatus(Status.DATA_CAN_MANIPULATE);
     }
 
     public void updateIsInQuotes(char data){

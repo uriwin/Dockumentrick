@@ -34,6 +34,11 @@ public class ManipulateAction implements IManipulateAction {
         return dataManipulator.getStatus();
     }
 
+    @Override
+    public void setStatus(Status status) {
+        dataManipulator.setStatus(status);
+    }
+
     public void addManipulatorFilter(IStatus manipulatorFilter) {
         this.manipulatorFilters.add(manipulatorFilter);
     }
@@ -44,7 +49,7 @@ public class ManipulateAction implements IManipulateAction {
         }
     }
 
-    public boolean isFiltersStatusBad() {
+    public boolean isAtLeastOneFiltersStatusBad() {
         for (IStatus manipulatorFilter : manipulatorFilters) {
             if (manipulatorFilter.getStatus() == Status.DATA_CAN_NOT_MANIPULATE) {
                 return true;
@@ -53,7 +58,7 @@ public class ManipulateAction implements IManipulateAction {
         return false;
     }
 
-    public boolean isFiltersStatusGood() {
+    public boolean isAllFiltersStatusGood() {
         for (IStatus manipulatorFilter : manipulatorFilters) {
             if (manipulatorFilter.getStatus() != Status.DATA_CAN_MANIPULATE) {
                 return false;

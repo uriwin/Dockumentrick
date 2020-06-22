@@ -9,14 +9,13 @@ public class StringEncloser extends AbstractManipulateAction {
 
     private String enclose;
 
-
     public StringEncloser(String stringToEnclose, String encloseString) {
 
         this.stringRequired = stringToEnclose;
 
         this.enclose = encloseString;
 
-        dataToManipulate = "";
+        setDataToManipulate("");
     }
 
     public String manipulateDataAction(String data) {
@@ -27,18 +26,18 @@ public class StringEncloser extends AbstractManipulateAction {
 
     @Override
     public void updateStatus(char data) {
-        if (dataToManipulate.length() < stringRequired.length()) {
-            if (stringRequired.charAt(dataToManipulate.length()) == data) {
-                dataToManipulate += data;
-                status = Status.MORE_DATA_NEEDED;
+        if (getDataToManipulate().length() < stringRequired.length()) {
+            if (stringRequired.charAt(getDataToManipulate().length()) == data) {
+                setDataToManipulate(getDataToManipulate() + data);
+                setStatus(Status.MORE_DATA_NEEDED);
             }
             else{
-                status = Status.DATA_CAN_NOT_MANIPULATE;
+                setStatus(Status.DATA_CAN_NOT_MANIPULATE);
             }
         }
         else{
-            status = Status.DATA_CAN_MANIPULATE;
-            dataToManipulate = "";
+             setStatus(Status.DATA_CAN_MANIPULATE);
+            setDataToManipulate("");
         }
     }
 }

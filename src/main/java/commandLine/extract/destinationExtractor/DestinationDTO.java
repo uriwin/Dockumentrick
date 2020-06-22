@@ -1,15 +1,11 @@
 package commandLine.extract.destinationExtractor;
 
-import commandLine.extract.sourceExtractor.SourceType;
-
 public class DestinationDTO {
     private DestinationType destinationType;
 
     private String destinationValue;
 
-    public DestinationDTO(){
-        this.destinationValue = "";
-    }
+    public DestinationDTO() { }
 
     public DestinationType getDestinationType() {
         return destinationType;

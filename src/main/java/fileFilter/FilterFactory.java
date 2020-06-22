@@ -18,8 +18,7 @@ public class FilterFactory {
                 return new CsvColumnFilter(Integer.parseInt(filterArgument));
             case FILTER_BASED_ON_FILE_TYPE:
                 FileFormatValidatorFactory fileFormatValidatorType = new FileFormatValidatorFactory();
-                FileFormatType fileFormatType = FileFormatType.valueOf(filterArgument);
-                return fileFormatValidatorType.getFileFormatValidator(fileFormatType);
+                return fileFormatValidatorType.getFileFormatValidator(FileFormatType.valueOf(filterArgument));
             default:
                 throw new IllegalArgumentException("No filter found");
         }

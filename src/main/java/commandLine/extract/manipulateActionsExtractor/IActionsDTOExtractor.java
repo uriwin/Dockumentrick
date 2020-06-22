@@ -2,7 +2,7 @@ package commandLine.extract.manipulateActionsExtractor;
 
 import java.util.List;
 
-public interface IActionsExtractor {
+public interface IActionsDTOExtractor {
 
-    public List<ActionDTO> getActions();
+    public List<ActionDTO> getActionsDTO();
 }

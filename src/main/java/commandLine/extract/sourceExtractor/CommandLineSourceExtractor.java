@@ -4,17 +4,17 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.Option;
 
-public class CommandLineInputSourceExtractor implements ISourceExtractor {
+public class CommandLineSourceExtractor implements ISourceDTOExtractor {
 
     private CommandLine commandLine;
 
-    public CommandLineInputSourceExtractor(CommandLine commandLine) {
+    public CommandLineSourceExtractor(CommandLine commandLine) {
         this.commandLine = commandLine;
     }
 
 
     @Override
-    public SourceDTO getSource() throws MissingArgumentException {
+    public SourceDTO getSourceDTO() throws MissingArgumentException {
         SourceDTO inputSourceDTO = new SourceDTO();
         for (Option option : commandLine.getOptions()) {
             try {

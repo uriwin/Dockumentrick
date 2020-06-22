@@ -1,4 +1,4 @@
-package commandLine.clientArguments;
+package arguments;
 
 import commandLine.extract.destinationExtractor.DestinationType;
 import commandLine.extract.sourceExtractor.SourceType;
@@ -7,7 +7,7 @@ import manipulateActions.ManipulateActionsType;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
-public class CommandLineArguments implements IClientArgument {
+public class CommandLineArguments implements IArgumentsRequired {
     private Options cliArguments;
 
     public CommandLineArguments() {
@@ -55,7 +55,7 @@ public class CommandLineArguments implements IClientArgument {
     }
 
     @Override
-    public Options getArguments() {
+    public Options getArgumentsRequired() {
         return cliArguments;
     }
 }

@@ -1,7 +1,7 @@
-package commandLine.clientArguments;
+package arguments;
 
 import org.apache.commons.cli.Options;
 
-public interface IClientArgument {
-    public Options getArguments();
+public interface IArgumentsRequired {
+    public Options getArgumentsRequired();
 }

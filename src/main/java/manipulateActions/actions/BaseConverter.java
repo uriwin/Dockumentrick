@@ -1,6 +1,7 @@
 package manipulateActions.actions;
 
 import manipulateActions.AbstractManipulateAction;
+import manipulateActions.convertBase.BaseTypeConverter;
 import status.Status;
 
 public class BaseConverter extends AbstractManipulateAction {
@@ -8,14 +9,16 @@ public class BaseConverter extends AbstractManipulateAction {
 
     private Integer currentBase;
 
-    private String dataToManipulate;
+    private final Integer DEFAULT_BASE = 10;
 
-    public BaseConverter(Integer baseToChange, Integer currentBase) {
-        this.baseToChange = baseToChange;
+    public BaseConverter(String baseToChange){
+        BaseTypeConverter baseTypeConverter = new BaseTypeConverter();
 
-        this.currentBase = currentBase;
+        this.baseToChange = baseTypeConverter.convertStringToInt(baseToChange);
 
-        this.dataToManipulate = "";
+        this.currentBase = DEFAULT_BASE;
+
+        setDataToManipulate("");
     }
 
     public String manipulateDataAction(String data) {
@@ -29,15 +32,15 @@ public class BaseConverter extends AbstractManipulateAction {
     @Override
     public void updateStatus(char data) {
         if (Character.isDigit(data)) {
-            dataToManipulate += data;
-            status = Status.MORE_DATA_NEEDED;
+            setDataToManipulate(getDataToManipulate() + data);
+            setStatus(Status.MORE_DATA_NEEDED);
         }
-        else if (dataToManipulate.length() > 0){
-            status = Status.DATA_CAN_MANIPULATE;
-            dataToManipulate = "";
+        else if (getDataToManipulate().length() > 0){
+            setStatus(Status.DATA_CAN_MANIPULATE);
+            setDataToManipulate("");
         }
         else{
-            status = Status.DATA_CAN_NOT_MANIPULATE;
+            setStatus(Status.DATA_CAN_NOT_MANIPULATE);
         }
     }
 }

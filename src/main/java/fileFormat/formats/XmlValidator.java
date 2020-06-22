@@ -20,15 +20,15 @@ public class XmlValidator extends BaseFileValidator {
             if (data == SpecialCharacters.CLOSE_TAG.toChar()){
                 isInMiddleOfTag = false;
             }
-            status = Status.DATA_CAN_NOT_MANIPULATE;
+            setStatus(Status.DATA_CAN_NOT_MANIPULATE);
         }
         else {
             if (data == SpecialCharacters.START_TAG.toChar()) {
                 isInMiddleOfTag = true;
-                status = Status.DATA_CAN_NOT_MANIPULATE;
+                setStatus(Status.DATA_CAN_NOT_MANIPULATE);
             }
             else{
-                status = Status.DATA_CAN_MANIPULATE;
+                setStatus(Status.DATA_CAN_MANIPULATE);
             }
         }
     }

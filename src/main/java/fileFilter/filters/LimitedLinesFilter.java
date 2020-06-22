@@ -20,10 +20,10 @@ public class LimitedLinesFilter extends AbstractStatus {
             linesRead += 1;
         }
         if (linesRead <= linesToManipulate){
-            status = Status.DATA_CAN_MANIPULATE;
+            setStatus(Status.DATA_CAN_MANIPULATE);
         }
         else{
-            status = Status.DATA_CAN_NOT_MANIPULATE;
+            setStatus(Status.DATA_CAN_NOT_MANIPULATE);
         }
     }
 }

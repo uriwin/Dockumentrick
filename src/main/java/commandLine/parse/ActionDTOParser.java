@@ -33,16 +33,11 @@ public class ActionDTOParser {
     public ManipulateAction parseAction(ManipulateActionsType manipulateActionsType, List<String> actionArguments) {
         switch (manipulateActionsType) {
             case BASE_CONVERTER:
-                BaseTypeConverter baseTypeConverter = new BaseTypeConverter();
-                Integer baseToChange = baseTypeConverter.convertStringToInt(actionArguments.get(0));
-                return new ManipulateAction(new BaseConverter(baseToChange, 10));
+                return new ManipulateAction(new BaseConverter(actionArguments.get(0)));
             case ESCAPE_CHARACTER_APPENDER:
-                String character = actionArguments.get(0);
-                return new ManipulateAction(new EscapeCharacterAppender(character.charAt(0)));
+                return new ManipulateAction(new EscapeCharacterAppender(actionArguments.get(0)));
             case STRING_ENCLOSER:
-                String stringToEnclose = actionArguments.get(0);
-                String encloseByValue = actionArguments.get(1);
-                return new ManipulateAction(new StringEncloser(stringToEnclose, encloseByValue));
+                return new ManipulateAction(new StringEncloser(actionArguments.get(0), actionArguments.get(1)));
             default:
                 throw new IllegalArgumentException("No action: " + manipulateActionsType.toString() + " exists");
         }
