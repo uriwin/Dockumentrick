@@ -1,34 +1,29 @@
 package fileFormat.formats;
 
+import fileFilter.SpecialCharacters;
 import status.Status;
 import fileFormat.BaseFileValidator;
-import fileFormat.FileFormatValidatorType;
+import fileFormat.FileFormatType;
 
 public class XmlValidator extends BaseFileValidator {
-    public boolean isInMiddleOfTag;
+    private boolean isInMiddleOfTag;
 
-    final static char START_OF_TAG = '<';
-
-    final static char END_OF_TAG = '>';
-
-    public XmlValidator(FileFormatValidatorType fileFormatType) {
+    public XmlValidator(FileFormatType fileFormatType) {
         super(fileFormatType);
 
         this.isInMiddleOfTag = false;
-
-        this.fileFormatType = fileFormatType;
     }
 
     @Override
     public void updateStatus(char data) {
         if (isInMiddleOfTag) {
-            if (data == END_OF_TAG){
+            if (data == SpecialCharacters.CLOSE_TAG.toChar()){
                 isInMiddleOfTag = false;
             }
             status = Status.DATA_CAN_NOT_MANIPULATE;
         }
         else {
-            if (data == START_OF_TAG) {
+            if (data == SpecialCharacters.START_TAG.toChar()) {
                 isInMiddleOfTag = true;
                 status = Status.DATA_CAN_NOT_MANIPULATE;
             }

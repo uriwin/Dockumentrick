@@ -1,61 +1,52 @@
 package fileFilter.filters;
 
+import fileFilter.SpecialCharacters;
 import status.AbstractStatus;
 import status.Status;
 
 public class XmlElementFilter extends AbstractStatus {
-    public String tagData;
+    private boolean isBuildingElement;
 
-    private boolean isInMiddleOfTag;
+    private String tagData;
 
-    private String startingTagToFilter;
+    private final String startingTagToFilter;
 
-    private String closingTagToFilter;
-
-    private Boolean isBetweenTagToFilter;
+    private final String closingTagToFilter;
 
     public XmlElementFilter(String tagName) {
 
-        this.startingTagToFilter = "<" + tagName + ">";
+        this.startingTagToFilter = SpecialCharacters.START_TAG.toChar() + tagName + SpecialCharacters.CLOSE_TAG.toChar();
 
-        this.closingTagToFilter = "</" + tagName + ">";
+        this.closingTagToFilter = SpecialCharacters.START_TAG.toChar() + SpecialCharacters.SLASH.toChar()
+                                    + tagName + SpecialCharacters.CLOSE_TAG.toChar();
 
         this.tagData = "";
 
-        this.isInMiddleOfTag = false;
-
-        this.isBetweenTagToFilter = false;
+        this.isBuildingElement = false;
     }
 
     public void updateStatus(char data){
-        if (isInMiddleOfTag){
+        if (isBuildingElement){
             tagData += data;
-            if (isEqualToEndOfTag(data)){
+            if (data == SpecialCharacters.CLOSE_TAG.toChar()){
                 handleEndOfTag();
             }
         }
-        else if (isEqualToStartOfTag(data)){
-            isInMiddleOfTag = true;
+        else if (data == SpecialCharacters.START_TAG.toChar()){
+            isBuildingElement = true;
             tagData += data;
             status = Status.MORE_DATA_NEEDED;
         }
     }
-    public boolean isEqualToEndOfTag(char data){
-        return data == '>';
-    }
 
-    public boolean isEqualToStartOfTag(char data){
-        return (data == '<');
-    }
-
-    public void handleEndOfTag(){
+    private void handleEndOfTag(){
         if (tagData.equals(closingTagToFilter)) {
             status = Status.DATA_CAN_NOT_MANIPULATE;
         }
         else if(tagData.equals(startingTagToFilter)){
             status = Status.DATA_CAN_MANIPULATE;
         }
-        isInMiddleOfTag = false;
+        isBuildingElement = false;
         tagData = "";
     }
 }

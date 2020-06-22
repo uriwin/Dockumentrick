@@ -1,12 +1,14 @@
 package commandLine.parse;
 
-import commandLine.extracte.manipulateActionsExtractor.ActionDTO;
-import commandLine.extracte.manipulateActionsExtractor.CommandLineActionsExtractor;
-import commandLine.extracte.manipulateActionsExtractor.IActionsExtractor;
-import commandLine.extracte.sourceExtractor.CommandLineInputSourceExtractor;
-import commandLine.extracte.sourceExtractor.CommandLineOutputSourceExtractor;
-import commandLine.extracte.sourceExtractor.ISourceExtractor;
-import commandLine.extracte.sourceExtractor.SourceDTO;
+import commandLine.extract.destinationExtractor.DestinationDTO;
+import commandLine.extract.destinationExtractor.IDestinationExtractor;
+import commandLine.extract.manipulateActionsExtractor.ActionDTO;
+import commandLine.extract.manipulateActionsExtractor.CommandLineActionsExtractor;
+import commandLine.extract.manipulateActionsExtractor.IActionsExtractor;
+import commandLine.extract.sourceExtractor.CommandLineInputSourceExtractor;
+import commandLine.extract.destinationExtractor.CommandLineOutputSourceExtractor;
+import commandLine.extract.sourceExtractor.ISourceExtractor;
+import commandLine.extract.sourceExtractor.SourceDTO;
 import inputStream.DataManipulatorInputStreamDecorator;
 import manipulateActions.ManipulateAction;
 import org.apache.commons.cli.*;
@@ -19,14 +21,18 @@ import java.util.List;
 public class CommandLineParser {
     private CommandLine commandLine;
 
-    private SourceDTOParser sourceParser;
+    private SourceDTOParser sourceDTOParser;
+
+    private DestinationDTOParser destinationDTOParser;
 
     private ActionDTOParser manipulateActionParser;
 
     public CommandLineParser(CommandLine commandLine){
         this.commandLine = commandLine;
 
-        this.sourceParser = new SourceDTOParser();
+        this.sourceDTOParser = new SourceDTOParser();
+
+        this.destinationDTOParser = new DestinationDTOParser();
 
         this.manipulateActionParser = new ActionDTOParser();
     }
@@ -38,7 +44,7 @@ public class CommandLineParser {
         SourceDTO inputSourceDTO = inputSourceExtractor.getSource();
         List<ActionDTO> actionDTOS = actionsExtractor.getActions();
 
-        InputStream inputStream = sourceParser.parseInputSourceDTO(inputSourceDTO);
+        InputStream inputStream = sourceDTOParser.parseSourceDTO(inputSourceDTO);
         List<ManipulateAction> manipulateActions = manipulateActionParser.parseActionsDTO(actionDTOS);
 
         DataManipulatorInputStreamDecorator dataManipulatorInputStreamDecorator =
@@ -48,8 +54,8 @@ public class CommandLineParser {
     }
 
     public OutputStream getOutputStream() throws MissingArgumentException, IOException {
-        ISourceExtractor outputSourceExtractor = new CommandLineOutputSourceExtractor(commandLine);
-        SourceDTO outputSourceDTO = outputSourceExtractor.getSource();
-        return sourceParser.parseOutputSourceDTO(outputSourceDTO);
+        IDestinationExtractor destinationExtractor = new CommandLineOutputSourceExtractor(commandLine);
+        DestinationDTO destinationDTO = destinationExtractor.getDestination();
+        return destinationDTOParser.parseDestinationDTO(destinationDTO);
     }
 }

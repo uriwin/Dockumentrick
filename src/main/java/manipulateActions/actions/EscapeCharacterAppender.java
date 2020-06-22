@@ -6,16 +6,14 @@ import status.Status;
 public class EscapeCharacterAppender extends AbstractManipulateAction {
     private char specialChar;
 
-    private String escapeCharacter;
+    private final String ESCAPE_CHARACTER = "\\";
 
     public EscapeCharacterAppender(char specialChar) {
         this.specialChar = specialChar;
-
-        this.escapeCharacter = "\\";
     }
 
     public String manipulateDataAction(String data) {
-        return data.replace(String.valueOf(this.specialChar), this.escapeCharacter + this.specialChar);
+        return data.replace(String.valueOf(this.specialChar), ESCAPE_CHARACTER + this.specialChar);
     }
 
     @Override

@@ -1,27 +1,32 @@
-package commandLine.extracte.manipulateActionsExtractor;
+package commandLine.extract.manipulateActionsExtractor;
 
 import commandLine.clientArguments.ArgumentTypeValidator;
+import manipulateActions.ManipulateActionsType;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.io.FilenameUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CommandLineActionsExtractor implements IActionsExtractor {
     private CommandLine commandLine;
 
     private Option[] arguments;
+
     public CommandLineActionsExtractor(CommandLine commandLine) {
         this.commandLine = commandLine;
 
-        this.arguments=commandLine.getOptions();
+        this.arguments = commandLine.getOptions();
     }
 
     @Override
     public List<ActionDTO> getActions() {
-        List<ActionDTO> actions = new ArrayList<ActionDTO>();
+        List<ActionDTO> actions     = new ArrayList<ActionDTO>();
         ArgumentTypeValidator argumentTypeValidator = new ArgumentTypeValidator();
-        Map<String,String> globalFilters = new HashMap<String, String>();
+        Map<String, String> globalFilters = new HashMap<String, String>();
         ActionDTO lastActionDTO = new ActionDTO();
 
         for (Option argument : arguments) {
@@ -31,11 +36,9 @@ public class CommandLineActionsExtractor implements IActionsExtractor {
                     actions.add(lastActionDTO);
                 }
                 lastActionDTO = initializeActionDTO(argument, globalFilters);
-            }
-            else if (argumentTypeValidator.isArgumentConnectedToInputFileSource(argumentName)){
+            } else if (argumentTypeValidator.isArgumentConnectedToInputFileSource(argumentName)) {
                 globalFilters.put(argumentName, FilenameUtils.getExtension(argument.getValue()).toUpperCase());
-            }
-            else if (argumentTypeValidator.isArgumentFilter(argumentName)) {
+            } else if (argumentTypeValidator.isArgumentFilter(argumentName)) {
                 lastActionDTO.addActionFilter(argumentName, argument.getValue());
             }
         }
@@ -46,15 +49,16 @@ public class CommandLineActionsExtractor implements IActionsExtractor {
         return actions;
     }
 
-    public ActionDTO initializeActionDTO(Option argument, Map<String,String> globalFilters) {
+    public ActionDTO initializeActionDTO(Option argument, Map<String, String> globalFilters) {
         ActionDTO actionDTO = new ActionDTO();
-        actionDTO.setManipulateActionName(argument.getLongOpt());
+        actionDTO.setManipulateActionsType(ManipulateActionsType.valueOf(argument.getLongOpt()));
         actionDTO.setActionArguments(argument.getValuesList());
         addFiltersToActionDTO(actionDTO, globalFilters);
+        actionDTO.setNotEmpty();
         return actionDTO;
     }
 
-    public ActionDTO addFiltersToActionDTO(ActionDTO actionDTO, Map<String,String> globalFilters) {
+    public ActionDTO addFiltersToActionDTO(ActionDTO actionDTO, Map<String, String> globalFilters) {
         for (String filterName : globalFilters.keySet()) {
             actionDTO.addActionFilter(filterName, globalFilters.get(filterName));
         }

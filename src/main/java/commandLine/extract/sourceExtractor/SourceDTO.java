@@ -1,4 +1,4 @@
-package commandLine.extracte.sourceExtractor;
+package commandLine.extract.sourceExtractor;
 
 public class SourceDTO {
     private SourceType sourceType;

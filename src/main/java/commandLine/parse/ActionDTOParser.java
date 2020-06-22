@@ -1,8 +1,6 @@
 package commandLine.parse;
 
-import commandLine.convertStringToEnum.StringToActionEnumConverter;
-import commandLine.convertStringToEnum.StringToFilterEnumConverter;
-import commandLine.extracte.manipulateActionsExtractor.ActionDTO;
+import commandLine.extract.manipulateActionsExtractor.ActionDTO;
 import fileFilter.FilterFactory;
 import fileFilter.FilterType;
 import manipulateActions.ManipulateAction;
@@ -18,51 +16,44 @@ import java.util.Map;
 
 public class ActionDTOParser {
 
-    public ActionDTOParser(){}
+    public ActionDTOParser() {
+    }
 
-    public List<ManipulateAction> parseActionsDTO(List<ActionDTO> actionDTOList){
+    public List<ManipulateAction> parseActionsDTO(List<ActionDTO> actionDTOList) {
         List<ManipulateAction> manipulateActions = new ArrayList<ManipulateAction>();
-        for (ActionDTO actionDTO: actionDTOList){
-            ManipulateAction manipulateAction = parseAction(actionDTO.getManipulateActionName(), actionDTO.getActionArguments());
+        for (ActionDTO actionDTO : actionDTOList) {
+            ManipulateAction manipulateAction =
+                    parseAction(actionDTO.getManipulateActionsType(), actionDTO.getActionArguments());
             manipulateAction = parseFilters(manipulateAction, actionDTO.getActionFilters());
             manipulateActions.add(manipulateAction);
         }
         return manipulateActions;
     }
 
-    public ManipulateAction parseAction(String actionName, List<String> actionArguments)
-    {
-        ManipulateActionsType manipulateActionsType = getManipulationActionType(actionName);
-
+    public ManipulateAction parseAction(ManipulateActionsType manipulateActionsType, List<String> actionArguments) {
         switch (manipulateActionsType) {
-            case BaseConverter:
+            case BASE_CONVERTER:
                 BaseTypeConverter baseTypeConverter = new BaseTypeConverter();
                 Integer baseToChange = baseTypeConverter.convertStringToInt(actionArguments.get(0));
                 return new ManipulateAction(new BaseConverter(baseToChange, 10));
-            case EscapeCharacterAppender:
+            case ESCAPE_CHARACTER_APPENDER:
                 String character = actionArguments.get(0);
                 return new ManipulateAction(new EscapeCharacterAppender(character.charAt(0)));
-            case StringEncloser:
+            case STRING_ENCLOSER:
                 String stringToEnclose = actionArguments.get(0);
                 String encloseByValue = actionArguments.get(1);
                 return new ManipulateAction(new StringEncloser(stringToEnclose, encloseByValue));
             default:
-                throw new IllegalArgumentException("No action: " + actionName + " exists");
+                throw new IllegalArgumentException("No action: " + manipulateActionsType.toString() + " exists");
         }
     }
 
-    public ManipulateAction parseFilters(ManipulateAction manipulateAction, Map<String,String> filters) {
-        StringToFilterEnumConverter stringToFilterEnumConverter = new StringToFilterEnumConverter();
+    public ManipulateAction parseFilters(ManipulateAction manipulateAction, Map<String, String> filters) {
         FilterFactory filterFactory = new FilterFactory();
-        for(String filterName : filters.keySet()){
-            FilterType filterType = stringToFilterEnumConverter.convertFilterNameToFilterType(filterName);
+        for (String filterName : filters.keySet()) {
+            FilterType filterType = FilterType.valueOf(filterName);
             manipulateAction.addManipulatorFilter(filterFactory.getFilter(filterType, filters.get(filterName)));
         }
         return manipulateAction;
-    }
-
-    public ManipulateActionsType getManipulationActionType(String actionName){
-        StringToActionEnumConverter stringToActionEnumConverter = new StringToActionEnumConverter();
-        return stringToActionEnumConverter.convertActionNameToActionType(actionName);
     }
 }

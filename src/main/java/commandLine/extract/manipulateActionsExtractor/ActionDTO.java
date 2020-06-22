@@ -1,4 +1,6 @@
-package commandLine.extracte.manipulateActionsExtractor;
+package commandLine.extract.manipulateActionsExtractor;
+
+import manipulateActions.ManipulateActionsType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,18 +8,21 @@ import java.util.List;
 import java.util.Map;
 
 public class ActionDTO{
-    private String manipulateActionName;
+    private ManipulateActionsType manipulateActionsType;
 
     private List<String> actionArguments;
 
     private Map<String,String> actionFilters;
 
+    private boolean isEmpty;
+
     public ActionDTO(){
-        this.manipulateActionName = "";
 
         this.actionArguments = new ArrayList<String>();
 
         this.actionFilters = new HashMap<String, String>();
+
+        this.isEmpty = true;
     }
 
     public void setActionArguments(List<String> actionArguments) {
@@ -28,12 +33,12 @@ public class ActionDTO{
         this.actionFilters.put(filterName, filterValue);
     }
 
-    public void setManipulateActionName(String manipulateActionName) {
-        this.manipulateActionName = manipulateActionName;
+    public void setManipulateActionsType(ManipulateActionsType manipulateActionsType) {
+        this.manipulateActionsType = manipulateActionsType;
     }
 
-    public String getManipulateActionName() {
-        return manipulateActionName;
+    public ManipulateActionsType getManipulateActionsType() {
+        return manipulateActionsType;
     }
 
     public List<String> getActionArguments() {
@@ -44,7 +49,11 @@ public class ActionDTO{
         return actionFilters;
     }
 
-    public boolean isEmpty(){
-        return manipulateActionName.equals("");
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+
+    public void setNotEmpty() {
+        isEmpty = false;
     }
 }

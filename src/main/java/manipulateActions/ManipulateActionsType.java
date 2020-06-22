@@ -1,7 +1,7 @@
 package manipulateActions;
 
 public enum ManipulateActionsType {
-    BaseConverter,
-    StringEncloser,
-    EscapeCharacterAppender
+    BASE_CONVERTER,
+    STRING_ENCLOSER,
+    ESCAPE_CHARACTER_APPENDER
 }

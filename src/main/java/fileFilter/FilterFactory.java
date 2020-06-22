@@ -1,11 +1,10 @@
 package fileFilter;
 
-import commandLine.convertStringToEnum.StringToFileFormatEnumConverter;
 import fileFilter.filters.CsvColumnFilter;
 import fileFilter.filters.LimitedLinesFilter;
 import fileFilter.filters.XmlElementFilter;
-import fileFormat.FileFormatFactory;
-import fileFormat.FileFormatValidatorType;
+import fileFormat.FileFormatValidatorFactory;
+import fileFormat.FileFormatType;
 import status.IStatus;
 
 public class FilterFactory {
@@ -18,11 +17,9 @@ public class FilterFactory {
             case FILTER_ON_SPECIFIC_COLUMN:
                 return new CsvColumnFilter(Integer.parseInt(filterArgument));
             case FILTER_BASED_ON_FILE_TYPE:
-                StringToFileFormatEnumConverter stringToFileFormatEnumConverter = new StringToFileFormatEnumConverter();
-                FileFormatFactory fileFormatFactory = new FileFormatFactory();
-                FileFormatValidatorType fileFormatValidatorType =
-                        stringToFileFormatEnumConverter.getFileFormatValidatorType(filterArgument);
-                return fileFormatFactory.getFileFormatValidator(fileFormatValidatorType);
+                FileFormatValidatorFactory fileFormatValidatorType = new FileFormatValidatorFactory();
+                FileFormatType fileFormatType = FileFormatType.valueOf(filterArgument);
+                return fileFormatValidatorType.getFileFormatValidator(fileFormatType);
             default:
                 throw new IllegalArgumentException("No filter found");
         }

@@ -1,34 +1,50 @@
 package fileFormat.formats;
 
+import fileFilter.SpecialCharacters;
 import status.Status;
 import fileFormat.BaseFileValidator;
-import fileFormat.FileFormatValidatorType;
+import fileFormat.FileFormatType;
 
 public class CsvValidator extends BaseFileValidator {
 
     private boolean isInQuotes;
 
-    public CsvValidator(FileFormatValidatorType fileFormatType) {
+    private boolean isInApostrophe;
+
+    public CsvValidator(FileFormatType fileFormatType) {
         super(fileFormatType);
 
         this.isInQuotes = false;
+
+        this.isInApostrophe = false;
     }
 
     @Override
     public void updateStatus(char data)
     {
         updateIsInQuotes(data);
-        if ((data == ',' || data == '\n') && (!isInQuotes)){
+        updateIsInApostrophe(data);
+
+        if ((isDataRelatedToFileFormat(data)) && (!isInQuotes && !isInApostrophe)){
             status = Status.DATA_CAN_NOT_MANIPULATE;
         }
         status = Status.DATA_CAN_MANIPULATE;
     }
 
-
     public void updateIsInQuotes(char data){
-        if (data == '\"' || data == '\''){
+        if (data == SpecialCharacters.QUOTES.toChar()){
             isInQuotes = !isInQuotes;
         }
+    }
+
+    public void updateIsInApostrophe(char data){
+        if (data == SpecialCharacters.APOSTROPHE.toChar()){
+            isInApostrophe = !isInApostrophe;
+        }
+    }
+
+    private boolean isDataRelatedToFileFormat(char data){
+        return (data == SpecialCharacters.COMMA.toChar() || data == SpecialCharacters.NEW_LINE.toChar());
     }
 
 }

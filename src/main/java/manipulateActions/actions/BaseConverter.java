@@ -22,7 +22,7 @@ public class BaseConverter extends AbstractManipulateAction {
         return convertFromBaseToBase(data, this.currentBase, this.baseToChange);
     }
 
-    public String convertFromBaseToBase(String data, int fromBase, int toBase) {
+    private String convertFromBaseToBase(String data, int fromBase, int toBase) {
         return Integer.toString(Integer.parseInt(data, fromBase), toBase);
     }
 
