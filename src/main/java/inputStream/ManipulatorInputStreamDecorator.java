@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class DataManipulatorInputStreamDecorator {
+public class ManipulatorInputStreamDecorator {
 
     private List<ManipulateAction> dataManipulatorActions;
 
     private InputStream inputStream;
 
-    public DataManipulatorInputStreamDecorator(List<ManipulateAction> dataManipulatorActions, InputStream inputStream) {
+    public ManipulatorInputStreamDecorator(List<ManipulateAction> dataManipulatorActions, InputStream inputStream) {
         this.dataManipulatorActions = dataManipulatorActions;
 
         this.inputStream = inputStream;

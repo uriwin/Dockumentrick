@@ -5,10 +5,10 @@ import fileFilter.filters.LimitedLinesFilter;
 import fileFilter.filters.XmlElementFilter;
 import fileFormat.FileFormatValidatorFactory;
 import fileFormat.FileFormatType;
-import status.IStatus;
+import status.IStatusProvider;
 
 public class FilterFactory {
-    public IStatus getFilter(FilterType filterType, String filterArgument) {
+    public IStatusProvider getFilter(FilterType filterType, String filterArgument) {
         switch (filterType) {
             case FILTER_ON_SPECIFIC_FIRST_LINES:
                 return new LimitedLinesFilter(Integer.parseInt(filterArgument));
@@ -17,8 +17,8 @@ public class FilterFactory {
             case FILTER_ON_SPECIFIC_COLUMN:
                 return new CsvColumnFilter(Integer.parseInt(filterArgument));
             case FILTER_BASED_ON_FILE_TYPE:
-                FileFormatValidatorFactory fileFormatValidatorType = new FileFormatValidatorFactory();
-                return fileFormatValidatorType.getFileFormatValidator(FileFormatType.valueOf(filterArgument));
+                FileFormatValidatorFactory fileFormatValidatorFactory = new FileFormatValidatorFactory();
+                return fileFormatValidatorFactory.getFileFormatValidator(FileFormatType.valueOf(filterArgument));
             default:
                 throw new IllegalArgumentException("No filter found");
         }

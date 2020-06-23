@@ -1,10 +1,10 @@
 package fileFilter.filters;
 
-import status.AbstractStatus;
+import status.AbstractStatusProvider;
 import status.Status;
 
-public class LimitedLinesFilter extends AbstractStatus {
-    private int linesToManipulate;
+public class LimitedLinesFilter extends AbstractStatusProvider {
+    private final int linesToManipulate;
 
     private int linesRead;
 
@@ -19,7 +19,7 @@ public class LimitedLinesFilter extends AbstractStatus {
         if (data == '\n') {
             linesRead += 1;
         }
-        if (linesRead <= linesToManipulate){
+        if (linesRead < linesToManipulate){
             setStatus(Status.DATA_CAN_MANIPULATE);
         }
         else{

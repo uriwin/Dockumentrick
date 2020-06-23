@@ -1,9 +1,9 @@
 package fileFormat;
 
-import status.AbstractStatus;
+import status.AbstractStatusProvider;
 import status.Status;
 
-public class BaseFileValidator extends AbstractStatus {
+public class BaseFileValidator extends AbstractStatusProvider {
     private FileFormatType fileFormatType;
 
     public BaseFileValidator(FileFormatType fileFormatType) {

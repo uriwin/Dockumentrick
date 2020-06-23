@@ -1,10 +1,10 @@
 package fileFilter.filters;
 
 import fileFilter.SpecialCharacters;
-import status.AbstractStatus;
+import status.AbstractStatusProvider;
 import status.Status;
 
-public class CsvColumnFilter extends AbstractStatus {
+public class CsvColumnFilter extends AbstractStatusProvider {
     private final int columnPositionToFilter;
 
     private int currentColumnPosition;

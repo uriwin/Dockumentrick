@@ -1,6 +1,6 @@
 package status;
 
-public abstract class AbstractStatus implements IStatus {
+public abstract class AbstractStatusProvider implements IStatusProvider {
     private Status status;
 
     @Override
@@ -8,8 +8,7 @@ public abstract class AbstractStatus implements IStatus {
         return status;
     }
 
-    @Override
-    public void setStatus(Status status) {
+    protected void setStatus(Status status) {
         this.status = status;
     }
 }

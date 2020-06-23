@@ -1,11 +1,11 @@
 package fileFormat;
 
-import status.IStatus;
-import fileFormat.formats.CsvValidator;
-import fileFormat.formats.XmlValidator;
+import status.IStatusProvider;
+import fileFormat.formatValidator.CsvValidator;
+import fileFormat.formatValidator.XmlValidator;
 
 public class FileFormatValidatorFactory {
-    public IStatus getFileFormatValidator(FileFormatType fileFormatValidatorType) {
+    public IStatusProvider getFileFormatValidator(FileFormatType fileFormatValidatorType) {
         switch (fileFormatValidatorType) {
             case TXT:
                 return new BaseFileValidator(fileFormatValidatorType);

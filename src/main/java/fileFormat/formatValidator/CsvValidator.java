@@ -1,4 +1,4 @@
-package fileFormat.formats;
+package fileFormat.formatValidator;
 
 import fileFilter.SpecialCharacters;
 import status.Status;

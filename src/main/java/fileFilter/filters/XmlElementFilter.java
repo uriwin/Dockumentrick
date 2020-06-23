@@ -1,10 +1,10 @@
 package fileFilter.filters;
 
 import fileFilter.SpecialCharacters;
-import status.AbstractStatus;
+import status.AbstractStatusProvider;
 import status.Status;
 
-public class XmlElementFilter extends AbstractStatus {
+public class XmlElementFilter extends AbstractStatusProvider {
     private boolean isBuildingElement;
 
     private String elementData;

@@ -1,6 +1,6 @@
 package manipulateActions;
 
-import status.IStatus;
+import status.IStatusProvider;
 import status.Status;
 
 import java.util.ArrayList;
@@ -10,13 +10,13 @@ public class ManipulateAction implements IManipulateAction {
 
     private IManipulateAction dataManipulator;
 
-    private List<IStatus> manipulatorFilters;
+    private List<IStatusProvider> manipulatorFilters;
 
     public ManipulateAction(IManipulateAction dataManipulator) {
 
         this.dataManipulator = dataManipulator;
 
-        this.manipulatorFilters = new ArrayList<IStatus>();
+        this.manipulatorFilters = new ArrayList<IStatusProvider>();
     }
 
     @Override
@@ -34,23 +34,18 @@ public class ManipulateAction implements IManipulateAction {
         return dataManipulator.getStatus();
     }
 
-    @Override
-    public void setStatus(Status status) {
-        dataManipulator.setStatus(status);
-    }
-
-    public void addManipulatorFilter(IStatus manipulatorFilter) {
+    public void addManipulatorFilter(IStatusProvider manipulatorFilter) {
         this.manipulatorFilters.add(manipulatorFilter);
     }
 
     public void updateFiltersStatus(char data) {
-        for (IStatus manipulatorFilter : manipulatorFilters) {
+        for (IStatusProvider manipulatorFilter : manipulatorFilters) {
             manipulatorFilter.updateStatus(data);
         }
     }
 
     public boolean isAtLeastOneFiltersStatusBad() {
-        for (IStatus manipulatorFilter : manipulatorFilters) {
+        for (IStatusProvider manipulatorFilter : manipulatorFilters) {
             if (manipulatorFilter.getStatus() == Status.DATA_CAN_NOT_MANIPULATE) {
                 return true;
             }
@@ -59,7 +54,7 @@ public class ManipulateAction implements IManipulateAction {
     }
 
     public boolean isAllFiltersStatusGood() {
-        for (IStatus manipulatorFilter : manipulatorFilters) {
+        for (IStatusProvider manipulatorFilter : manipulatorFilters) {
             if (manipulatorFilter.getStatus() != Status.DATA_CAN_MANIPULATE) {
                 return false;
             }

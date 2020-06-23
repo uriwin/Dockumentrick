@@ -13,16 +13,15 @@ public abstract class AbstractManipulateAction implements IManipulateAction{
         return status;
     }
 
-    @Override
-    public void setStatus(Status status) {
+    protected void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getDataToManipulate() {
+    protected String getDataToManipulate() {
         return dataToManipulate;
     }
 
-    public void setDataToManipulate(String dataToManipulate) {
+    protected void setDataToManipulate(String dataToManipulate) {
         this.dataToManipulate = dataToManipulate;
     }
 }

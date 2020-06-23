@@ -11,7 +11,7 @@ import commandLine.extract.sourceExtractor.ISourceDTOExtractor;
 import commandLine.extract.sourceExtractor.SourceDTO;
 import commandLine.extract.sourceExtractor.SourceType;
 import fileFilter.FilterType;
-import inputStream.DataManipulatorInputStreamDecorator;
+import inputStream.ManipulatorInputStreamDecorator;
 import manipulateActions.ManipulateAction;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FilenameUtils;
@@ -52,8 +52,8 @@ public class CommandLineParser {
         InputStream inputStream = sourceDTOParser.parseSourceDTO(sourceDTO);
         List<ManipulateAction> manipulateActions = manipulateActionParser.parseActionsDTO(actionsDTO);
 
-        DataManipulatorInputStreamDecorator dataManipulatorInputStreamDecorator =
-                new DataManipulatorInputStreamDecorator(manipulateActions, inputStream);
+        ManipulatorInputStreamDecorator dataManipulatorInputStreamDecorator =
+                new ManipulatorInputStreamDecorator(manipulateActions, inputStream);
 
         return dataManipulatorInputStreamDecorator.getDataManipulatorInputStream();
     }
