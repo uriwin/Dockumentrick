@@ -1,7 +1,7 @@
-package commandLine.parse;
+package arguments.parse;
 
-import commandLine.extract.sourceExtractor.SourceDTO;
-import commandLine.extract.sourceExtractor.SourceType;
+import arguments.extract.sourceExtractor.SourceDTO;
+import arguments.extract.sourceExtractor.SourceType;
 
 import java.io.*;
 
@@ -12,7 +12,7 @@ public class SourceDTOParser {
             case INPUT_FILE:
                 return new FileInputStream(sourceDTO.getSourceValue());
             default:
-                throw new IllegalArgumentException("input source does not exists");
+                throw new IllegalArgumentException("Unsupported input source: " + sourceType.toString());
         }
     }
 }

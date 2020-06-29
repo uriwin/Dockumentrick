@@ -1,6 +1,6 @@
-package commandLine.parse;
+package arguments.parse;
 
-import commandLine.extract.manipulateActionsExtractor.ActionDTO;
+import arguments.extract.manipulateActionsExtractor.ActionDTO;
 import fileFilter.FilterFactory;
 import fileFilter.FilterType;
 import manipulateActions.ManipulateAction;
@@ -8,7 +8,6 @@ import manipulateActions.ManipulateActionsType;
 import manipulateActions.actions.BaseConverter;
 import manipulateActions.actions.EscapeCharacterAppender;
 import manipulateActions.actions.StringEncloser;
-import manipulateActions.convertBase.BaseTypeConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class ActionDTOParser {
             case STRING_ENCLOSER:
                 return new ManipulateAction(new StringEncloser(actionArguments.get(0), actionArguments.get(1)));
             default:
-                throw new IllegalArgumentException("No action: " + manipulateActionsType.toString() + " exists");
+                throw new IllegalArgumentException("Unsupported action: " + manipulateActionsType.toString());
         }
     }
 

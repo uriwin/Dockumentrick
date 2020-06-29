@@ -1,15 +1,18 @@
-package commandLine.parse;
+package arguments.commandLine;
 
-import commandLine.extract.destinationExtractor.DestinationDTO;
-import commandLine.extract.destinationExtractor.IDestinationDTOExtractor;
-import commandLine.extract.manipulateActionsExtractor.ActionDTO;
-import commandLine.extract.manipulateActionsExtractor.CommandLineActionsExtractor;
-import commandLine.extract.manipulateActionsExtractor.IActionsDTOExtractor;
-import commandLine.extract.sourceExtractor.CommandLineSourceExtractor;
-import commandLine.extract.destinationExtractor.CommandLineDestinationExtractor;
-import commandLine.extract.sourceExtractor.ISourceDTOExtractor;
-import commandLine.extract.sourceExtractor.SourceDTO;
-import commandLine.extract.sourceExtractor.SourceType;
+import arguments.extract.destinationExtractor.DestinationDTO;
+import arguments.extract.destinationExtractor.IDestinationDTOExtractor;
+import arguments.extract.manipulateActionsExtractor.ActionDTO;
+import arguments.commandLine.extract.CommandLineActionsExtractor;
+import arguments.extract.manipulateActionsExtractor.IActionsDTOExtractor;
+import arguments.commandLine.extract.CommandLineSourceExtractor;
+import arguments.commandLine.extract.CommandLineDestinationExtractor;
+import arguments.extract.sourceExtractor.ISourceDTOExtractor;
+import arguments.extract.sourceExtractor.SourceDTO;
+import arguments.extract.sourceExtractor.SourceType;
+import arguments.parse.ActionDTOParser;
+import arguments.parse.DestinationDTOParser;
+import arguments.parse.SourceDTOParser;
 import fileFilter.FilterType;
 import inputStream.ManipulatorInputStreamDecorator;
 import manipulateActions.ManipulateAction;
@@ -65,13 +68,18 @@ public class CommandLineParser {
     }
 
     private void addFilterBasedOnSource(SourceDTO inputSourceDTO, List<ActionDTO> actionDTOS){
-        if (inputSourceDTO.getSourceType() == SourceType.INPUT_FILE){
-            String fileFormat = FilenameUtils.getExtension(inputSourceDTO.getSourceValue()).toUpperCase();
-            String filterName = FilterType.FILTER_BASED_ON_FILE_TYPE.toString();
+        SourceType sourceType = inputSourceDTO.getSourceType();
+        switch (sourceType){
+            case INPUT_FILE:
+                String fileFormat = FilenameUtils.getExtension(inputSourceDTO.getSourceValue()).toUpperCase();
+                String filterName = FilterType.FILTER_BASED_ON_FILE_TYPE.toString();
 
-            for (ActionDTO actionDTO: actionDTOS){
-                actionDTO.addActionFilter(filterName, fileFormat);
-            }
+                for (ActionDTO actionDTO: actionDTOS){
+                    actionDTO.addActionFilter(filterName, fileFormat);
+                }
+                break;
+            default:
+                System.out.println("No filter based on source exists");
         }
     }
 }

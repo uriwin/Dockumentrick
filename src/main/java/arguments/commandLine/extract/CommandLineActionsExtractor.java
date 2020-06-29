@@ -1,6 +1,8 @@
-package commandLine.extract.manipulateActionsExtractor;
+package arguments.commandLine.extract;
 
 import arguments.ArgumentTypeValidator;
+import arguments.extract.manipulateActionsExtractor.ActionDTO;
+import arguments.extract.manipulateActionsExtractor.IActionsDTOExtractor;
 import manipulateActions.ManipulateActionsType;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -27,13 +29,13 @@ public class CommandLineActionsExtractor implements IActionsDTOExtractor {
 
         for (Option argument : arguments) {
             String argumentName = argument.getLongOpt();
-            if (argumentTypeValidator.isArgumentAction(argumentName)) {
+            if (argumentTypeValidator.isArgumentRelatedToAction(argumentName)) {
                 if (!lastActionDTO.isEmpty()) {
                     actions.add(lastActionDTO);
                 }
                 lastActionDTO = initializeActionDTO(argument);
             }
-            else if (argumentTypeValidator.isArgumentFilter(argumentName)) {
+            else if (argumentTypeValidator.isArgumentRelatedToFilter(argumentName)) {
                 lastActionDTO.addActionFilter(argumentName, argument.getValue());
             }
         }

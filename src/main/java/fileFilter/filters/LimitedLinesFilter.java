@@ -1,5 +1,6 @@
 package fileFilter.filters;
 
+import fileFilter.SpecialCharacters;
 import status.AbstractStatusProvider;
 import status.Status;
 
@@ -16,7 +17,7 @@ public class LimitedLinesFilter extends AbstractStatusProvider {
 
     public void updateStatus(char data)
     {
-        if (data == '\n') {
+        if (data == SpecialCharacters.NEW_LINE.toChar()) {
             linesRead += 1;
         }
         if (linesRead < linesToManipulate){

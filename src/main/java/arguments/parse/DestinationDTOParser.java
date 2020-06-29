@@ -1,9 +1,7 @@
-package commandLine.parse;
+package arguments.parse;
 
-import commandLine.extract.destinationExtractor.DestinationDTO;
-import commandLine.extract.destinationExtractor.DestinationType;
-import commandLine.extract.sourceExtractor.SourceDTO;
-import commandLine.extract.sourceExtractor.SourceType;
+import arguments.extract.destinationExtractor.DestinationDTO;
+import arguments.extract.destinationExtractor.DestinationType;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,11 +11,11 @@ public class DestinationDTOParser {
 
     public OutputStream parseDestinationDTO(DestinationDTO destinationDTO) throws FileNotFoundException {
         DestinationType destinationType = destinationDTO.getDestinationType();
-        switch (destinationType){
+        switch (destinationType) {
             case OUTPUT_FILE:
                 return new FileOutputStream(destinationDTO.getDestinationValue());
             default:
-                throw new IllegalArgumentException("output source does not exists");
+                throw new IllegalArgumentException("Unsupported output source: " + destinationType.toString());
         }
     }
 }

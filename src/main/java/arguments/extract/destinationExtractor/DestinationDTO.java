@@ -1,4 +1,4 @@
-package commandLine.extract.destinationExtractor;
+package arguments.extract.destinationExtractor;
 
 public class DestinationDTO {
     private DestinationType destinationType;
